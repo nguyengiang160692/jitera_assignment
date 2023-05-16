@@ -13,7 +13,9 @@ npm run start
 ```bash
 cd backend
 npm install
+cp .env.example .env
 npm run dev
 ```
 
 
+### Begin

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "concurrently \"npx tsc -w\" \"nodemon -w output/index.js\" "
+    "dev": "concurrently --raw \"npx tsc -w\" \"nodemon output/index.js\" "
   },
   "dependencies": {
     "dotenv": "^16.0.3",
