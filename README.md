@@ -1,7 +1,7 @@
 ### Usage instructions
 
 #### Frontend
-    
+
 ```bash
 cd frontend 
 npm install
@@ -18,6 +18,7 @@ npm run dev
 ```
 
 Create new database
+
 ```bash
 mongosh
 
@@ -36,6 +37,5 @@ db.createUser({
 })
 
 ```
-
 
 ### Begin
