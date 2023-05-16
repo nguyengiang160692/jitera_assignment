@@ -11,3 +11,4 @@ router.get('/', (req, res) => {
     res.send('Hi there! again!');
 });
 exports.default = router;
+//# sourceMappingURL=routers.js.map
