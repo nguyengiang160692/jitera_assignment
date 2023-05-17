@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import { exit } from 'process';
 import dotenv from 'dotenv';
 
+import cors from 'cors';
+
 dotenv.config();
 
 const app = express();
@@ -29,13 +31,12 @@ mongoose.connect(mongoUri, {}).then(() => {
     }
 });
 
-app.get('/', (req, res) => {
-    res.send('Hi there!');
-})
+
 
 // more middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.use('/api', routers);
 

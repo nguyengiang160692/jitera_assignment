@@ -8,7 +8,8 @@ import { Container, CssBaseline, Typography, Link as MaterialLink, Snackbar } fr
 
 //redux
 import { Provider, useSelector } from "react-redux";
-import { store, RootState } from "./redux/store";
+import { store, RootState, useAppDispatch } from "./redux/store";
+import { closeSnackbar } from "./redux/snackbar";
 
 import "./App.css";
 
@@ -86,10 +87,11 @@ const Layout: React.FC = () => {
 const Popup: React.FC = () => {
 
   const snackBar = useSelector((state: RootState) => state.snackBar)
+  const dispatch = useAppDispatch()
 
   return <>
     <Snackbar open={snackBar.open}
-      autoHideDuration={5000}
+      onClose={() => { dispatch(closeSnackbar()) }}
       message={snackBar.message} />
   </>
 }

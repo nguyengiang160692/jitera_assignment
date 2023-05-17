@@ -10,10 +10,14 @@ export const snackbarSlice = createSlice({
     initialState,
     reducers: {
         openSnackbar: (state, action) => {
+            console.log('open snackbar');
+
             state.open = true;
             state.message = action.payload;
         },
         closeSnackbar: (state) => {
+            console.log('close snackbar');
+
             state.open = false;
             state.message = '';
         },

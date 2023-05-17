@@ -8,6 +8,15 @@ npm install
 npm run start
 ```
 
+Tech lib uses in frontend:
+
+- React
+- Redux
+- Redux-thunk
+- React-router-dom
+- Axios
+- Material-ui
+
 #### Backend
 
 ```bash
@@ -16,6 +25,16 @@ npm install
 cp .env.example .env
 npm run dev
 ```
+
+Tech lib uses in backend:
+
+- Nodejs
+- Express
+- Mongoose
+- Passport
+- Bcryptjs
+- Jsonwebtoken
+- Nodemon
 
 Create new database
 

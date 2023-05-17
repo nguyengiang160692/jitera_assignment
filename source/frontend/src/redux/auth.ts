@@ -1,6 +1,7 @@
 import { createSlice, ThunkAction } from "@reduxjs/toolkit";
 import { AppThunk } from "./store";
 import apiService from "../lib/apiService";
+import { openSnackbar } from "./snackbar";
 
 const initialState = {
     token: null,
@@ -83,10 +84,12 @@ export const register = (input: RegisterData): AppThunk => async (dispatch, getS
     }
 
     // fetch API
-    const response = await apiService.post('/user/register', { ...input });
+    apiService.post('/user/register', { ...input }).then((response) => {
+        const data = response.data;
 
-    const data = await response.data;
-
-    // we not gonna login user after registration, we will redirect to login page instead
-    dispatch(registerSuccess(data))
+        // we not gonna login user after registration, we will redirect to login page instead
+        dispatch(registerSuccess(data))
+    }).catch((error) => {
+        dispatch(openSnackbar(error.response.data.message));
+    });
 };

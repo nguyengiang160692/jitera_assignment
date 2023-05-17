@@ -18,14 +18,15 @@ export const UserSchema = new mongoose.Schema({
     token: { type: String }
 });
 
-export const UserValidate = Joi.object({
+export const qualityUser = Joi.object({
     username: Joi.string().required().max(32),
     //require password complex
     password: Joi.string()
-        .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+        .min(8)
+        .pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
         .required()
         .messages({
-            'string.pattern.base': 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character.',
+            'string.pattern.base': 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number',
         })
 })
 

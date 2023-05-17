@@ -2,14 +2,16 @@
 // Path: backend/routers.ts
 
 import express from 'express';
-import { UserValidate } from './model/model';
+import { qualityUser } from './model/model';
 import { createNewuser } from './services';
 import { ErrorResponse } from './http/respose'
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('Hi there! again!');
+router.get('/index', (req, res) => {
+    res.json({
+        message: 'Connected APIs'
+    });
 });
 
 //TODO: user get profile
@@ -24,7 +26,7 @@ router.post('/user/register', async (req, res) => {
         });
     }
 
-    const { error, value } = UserValidate.validate(req.body)
+    const { error, value } = qualityUser.validate(req.body)
 
     if (error) {
         return res.status(400).send(<ErrorResponse>{
