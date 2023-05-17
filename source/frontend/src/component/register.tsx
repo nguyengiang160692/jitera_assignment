@@ -2,10 +2,24 @@ import React from "react";
 import { Grid, Box, Avatar, Typography, TextField, Button, FormControlLabel, Checkbox } from "@mui/material";
 import { ContactsOutlined } from '@mui/icons-material'
 import { Link } from "react-router-dom";
+import { register } from '../redux/auth'
+import { useAppDispatch } from '../redux/store'
+
 
 function Register() {
+  const dispatch = useAppDispatch()
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()  // prevent default action
+    // call action to send data to server
+
+    //export event value
+    const data = new FormData(event.currentTarget)
+
+    dispatch(register({
+      username: data.get('username') as string,
+      password: data.get('password') as string,
+    }))
   }
   return (
     <>

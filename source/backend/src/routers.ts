@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 //TODO: add middleware to check token on few routes
 
 // User register
-router.post('/user', async (req, res) => {
+router.post('/user/register', async (req, res) => {
     //validate request
     if (!req.body) {
         res.status(400).send(<ErrorResponse>{

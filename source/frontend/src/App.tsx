@@ -5,6 +5,11 @@ import Login from "./component/login";
 import Dashboard from "./component/dashboard";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Container, CssBaseline, Typography, Link as MaterialLink } from "@mui/material";
+
+//redux
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+
 import "./App.css";
 
 
@@ -31,20 +36,22 @@ function App() {
 
 const Content: React.FC = () => {
   return <>
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Outlet />
-        <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 4 }}>
-          {'Copyright © '}
-          <MaterialLink color="inherit" href="https://mui.com/">
-            Myself
-          </MaterialLink>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-        </Typography>
-      </Container>
-    </ThemeProvider >
+    <Provider store={store}>
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Outlet />
+          <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 4 }}>
+            {'Copyright © '}
+            <MaterialLink color="inherit" href="https://mui.com/">
+              Myself
+            </MaterialLink>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+          </Typography>
+        </Container>
+      </ThemeProvider >
+    </Provider>
   </>
 }
 
