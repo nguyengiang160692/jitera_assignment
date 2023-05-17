@@ -32,7 +32,7 @@ db.createUser({
   user: 'jitera_user',
   pwd: 'jitera_password',
   roles: [
-    { role: 'readWrite', db: 'jitera_db' },
+    { role: 'dbOwner', db: 'jitera_db' },
   ],
 })
 
