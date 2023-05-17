@@ -1,13 +1,16 @@
 import { configureStore, ThunkAction, Action, } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import authReducer from './auth'
+import snackbarReducer from './snackbar';
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
+        snackBar: snackbarReducer,
     },
 })
 
+// default store dispatch will use ThunkDispatch type ! 
 export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch: () => AppDispatch = useDispatch;

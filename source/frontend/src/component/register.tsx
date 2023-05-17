@@ -3,6 +3,7 @@ import { Grid, Box, Avatar, Typography, TextField, Button, FormControlLabel, Che
 import { ContactsOutlined } from '@mui/icons-material'
 import { Link } from "react-router-dom";
 import { register } from '../redux/auth'
+import { openSnackbar } from "../redux/snackbar";
 import { useAppDispatch } from '../redux/store'
 
 
@@ -15,6 +16,14 @@ function Register() {
 
     //export event value
     const data = new FormData(event.currentTarget)
+
+    const parsed = Object.fromEntries(data)
+
+    console.log(parsed);
+
+    if (parsed.password !== parsed.confirm_password) {
+      dispatch(openSnackbar('Please make sure password is the same as confirm password'))
+    }
 
     dispatch(register({
       username: data.get('username') as string,
@@ -37,7 +46,7 @@ function Register() {
         <Typography component="h1" variant="h5">
           Regsitration
         </Typography>
-        <Box component={'form'} noValidate onSubmit={handleSubmit}>
+        <Box component={'form'} onSubmit={handleSubmit}>
           <TextField
             margin="normal"
             required
@@ -70,7 +79,7 @@ function Register() {
             autoFocus
           />
 
-          <FormControlLabel control={<Checkbox name="agree_term" />} label="Agree Term & Conditions" />
+          <FormControlLabel required control={<Checkbox name="agree_term" id="agree_term" />} label="Agree Term & Conditions" />
 
           <Button
             type="submit"

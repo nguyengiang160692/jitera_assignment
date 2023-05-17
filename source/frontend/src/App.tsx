@@ -4,11 +4,11 @@ import Register from "./component/register";
 import Login from "./component/login";
 import Dashboard from "./component/dashboard";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Container, CssBaseline, Typography, Link as MaterialLink } from "@mui/material";
+import { Container, CssBaseline, Typography, Link as MaterialLink, Snackbar } from "@mui/material";
 
 //redux
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import { Provider, useSelector } from "react-redux";
+import { store, RootState } from "./redux/store";
 
 import "./App.css";
 
@@ -41,6 +41,7 @@ const Content: React.FC = () => {
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Outlet />
+          <Popup />
           <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 4 }}>
             {'Copyright © '}
             <MaterialLink color="inherit" href="https://mui.com/">
@@ -81,5 +82,16 @@ const Layout: React.FC = () => {
     </>
   );
 };
+
+const Popup: React.FC = () => {
+
+  const snackBar = useSelector((state: RootState) => state.snackBar)
+
+  return <>
+    <Snackbar open={snackBar.open}
+      autoHideDuration={5000}
+      message={snackBar.message} />
+  </>
+}
 
 export default App;
