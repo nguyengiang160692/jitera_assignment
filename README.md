@@ -12,7 +12,7 @@ Tech lib uses in frontend:
 
 - React
 - Redux
-- Redux-thunk
+- Redux-thunk (To make the process of asynchronous data flow easier)
 - React-router-dom
 - Axios
 - Material-ui
@@ -28,13 +28,15 @@ npm run dev
 
 Tech lib uses in backend:
 
+- nvm (node version management) => require node vereion 18
 - Nodejs
 - Express
 - Mongoose
+- Joi (for validation input data)
 - Passport
-- Bcryptjs
+- Bcryptjs (Hash & salt)
 - Jsonwebtoken
-- Nodemon
+- Nodemon (develop process)
 
 Create new database
 

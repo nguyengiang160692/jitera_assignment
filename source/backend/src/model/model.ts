@@ -31,23 +31,24 @@ UserSchema.pre<IUser>('save', async function (next) {
         return next();
     }
 
+    const salt = bcrypt.genSaltSync(saltRounds);
+
     try {
-        const salt = bcrypt.genSaltSync(saltRounds);
+        return new Promise((resolve, reject) => {
+            bcrypt.hash(this.password, salt, async (err: any, hash: string) => {
+                if (err) {
+                    return reject(err);
+                }
 
-        return bcrypt.hash(this.password, salt, (err: any, hash: string) => {
-            if (err) {
-                return next(err);
-            }
+                this.password = hash;
+                this.salt = salt;
 
-            this.password = hash;
-            this.salt = salt;
-            this.save()
-
-            return next();
-
-        });
+                resolve()
+            });
+        })
     } catch (err: any) {
-        return next(err);
+        console.log('Error on pre<IUser> save', err.message);
+        return next(err)
     }
 })
 

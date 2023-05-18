@@ -24,6 +24,7 @@ function Register() {
         message: 'Password and Confirm Password not match',
         severity: 'error'
       }))
+      return;
     }
 
     dispatch(register({

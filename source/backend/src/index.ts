@@ -31,14 +31,18 @@ mongoose.connect(mongoUri, {}).then(() => {
     }
 });
 
-
-
 // more middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use('/api', routers);
+
+//for debug purpose only 
+process.on('unhandledRejection', (reason, p) => {
+    console.error('Unhandled Rejection at:', p, 'reason:', reason)
+    process.exit(1)
+});
 
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`);
