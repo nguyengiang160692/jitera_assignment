@@ -41,6 +41,7 @@ UserSchema.pre<IUser>('save', async function (next) {
 
             this.password = hash;
             this.salt = salt;
+            this.save()
 
             return next();
 

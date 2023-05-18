@@ -3,7 +3,12 @@ import { Box, TextField, FormControlLabel, Checkbox, Button, Grid, Avatar, Typog
 import { PersonOutlineOutlined } from "@mui/icons-material";
 import { Link } from 'react-router-dom'
 
+import { useAppDispatch } from '../redux/store'
+import { login } from '../redux/auth'
+
 function Login() {
+  const dispatch = useAppDispatch();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -11,6 +16,12 @@ function Login() {
       username: data.get('username'),
       password: data.get('password'),
     });
+
+    dispatch(login({
+      username: data.get('username') as string,
+      password: data.get('password') as string,
+    }))
+
   };
 
   return (

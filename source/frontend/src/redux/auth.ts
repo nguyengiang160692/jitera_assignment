@@ -11,6 +11,7 @@ const initialState = {
     user: null,
 };
 
+// HOW TO APP EFFECT Frontend
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -40,16 +41,28 @@ export const { userLoading, loginSuccess, logoutSuccess, registerSuccess } = aut
 
 export default authSlice.reducer;
 
+// HOW TO APP CALL Backend & interact with another store reducers
+
 // write async actions !!!
 // using thunk middleware to dispatch async actions & interact with store (fetch API)
 // use useDispatch hook to dispatch actions later in components
 
-export const login = (username: string, password: string): AppThunk => async (dispatch, getState) => {
+interface LoginData {
+    username: string;
+    password: string;
+}
+
+interface RegisterData {
+    username: string;
+    password: string;
+}
+
+export const login = (input: LoginData): AppThunk => async (dispatch, getState) => {
     // dispatch userLoading action
     dispatch(userLoading());
 
     // fetch API
-    const response = await apiService.post('/auth/login', { username, password });
+    const response = await apiService.post('/auth/login', { ...input });
 
     const data = await response.data;
 
@@ -69,12 +82,6 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
     // dispatch logoutSuccess action
     dispatch(logoutSuccess());
 };
-
-
-interface RegisterData {
-    username: string;
-    password: string;
-}
 
 export const register = (input: RegisterData): AppThunk => async (dispatch, getState) => {
     //check is logined
