@@ -3,6 +3,9 @@ import { AppThunk } from "./store";
 import apiService from "../lib/apiService";
 import { openSnackbar } from "./snackbar";
 
+// use it to define state type instead ! I know in real world, we can not use this because maybe FE project is on different repo
+import { IUser } from '../../../backend/src/model/model'
+
 //TODO: load from local storage and populate to initialState
 const initialState = {
     token: null,
@@ -62,12 +65,23 @@ export const login = (input: LoginData): AppThunk => async (dispatch, getState) 
     dispatch(userLoading());
 
     // fetch API
-    const response = await apiService.post('/auth/login', { ...input });
+    const response = await apiService.post('/auth/login', { ...input }).then((response) => {
+        const data = response.data;
 
-    const data = await response.data;
+        const user: IUser = data.data;
 
-    // dispatch loginSuccess action
-    dispatch(loginSuccess(data));
+        // dispatch loginSuccess action
+        dispatch(loginSuccess(data));
+        dispatch(openSnackbar({
+            message: 'Login success!',
+            severity: 'success',
+        }));
+    }).catch((err) => {
+        dispatch(openSnackbar({
+            message: err.message,
+            severity: 'error',
+        }));
+    });
 };
 
 export const logout = (): AppThunk => async (dispatch, getState) => {
@@ -92,7 +106,7 @@ export const register = (input: RegisterData): AppThunk => async (dispatch, getS
     }
 
     // fetch API
-    apiService.post('/user/register', { ...input }).then((response) => {
+    apiService.post('/auth/register', { ...input }).then((response) => {
         const data = response.data;
 
         dispatch(openSnackbar({

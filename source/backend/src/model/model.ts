@@ -21,8 +21,6 @@ const UserSchema = new Schema<IUser>({
 //pre save User to database make sure password is hashed and salted
 const saltRounds = 10;
 
-//TODO: fix issue on saving without hash password
-
 UserSchema.pre<IUser>('save', async function (next) {
     //only execute code below if password is modified or new user 
     if (this.isNew) {
@@ -51,6 +49,16 @@ UserSchema.pre<IUser>('save', async function (next) {
         return next(err)
     }
 })
+
+UserSchema.methods.comparePassword = async function (password: string) {
+    try {
+        //compare input password with hashed password in database with salt
+        const isMatch = await bcrypt.compare(password, this.password);
+        return isMatch;
+    } catch (err: any) {
+        console.log('Error on comparePassword', err.message);
+    }
+}
 
 export const User = model<IUser>('User', UserSchema);
 

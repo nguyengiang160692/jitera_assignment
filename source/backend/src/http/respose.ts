@@ -4,7 +4,7 @@ export interface ErrorResponse extends Error {
     message: string;
 }
 
-export interface SuccessResponse {
+export type SuccessResponse = {
     code: number;
     message: string;
     data: any;
