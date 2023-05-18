@@ -4,7 +4,7 @@ import Register from "./component/register";
 import Login from "./component/login";
 import Dashboard from "./component/dashboard";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Container, CssBaseline, Typography, Link as MaterialLink, Snackbar } from "@mui/material";
+import { Container, CssBaseline, Typography, Link as MaterialLink, Snackbar, Alert, AlertColor } from "@mui/material";
 
 //redux
 import { Provider, useSelector } from "react-redux";
@@ -90,9 +90,11 @@ const Popup: React.FC = () => {
   const dispatch = useAppDispatch()
 
   return <>
-    <Snackbar open={snackBar.open}
-      onClose={() => { dispatch(closeSnackbar()) }}
-      message={snackBar.message} />
+    <Snackbar open={snackBar.open} onClose={() => { dispatch(closeSnackbar()) }} message={snackBar.message}>
+      <Alert onClose={() => { dispatch(closeSnackbar()) }} severity={snackBar.severity as AlertColor} sx={{ width: '100%' }}>
+        {snackBar.message}
+      </Alert>
+    </Snackbar>
   </>
 }
 

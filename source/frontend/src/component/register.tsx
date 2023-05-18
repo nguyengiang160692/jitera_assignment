@@ -19,10 +19,11 @@ function Register() {
 
     const parsed = Object.fromEntries(data)
 
-    console.log(parsed);
-
     if (parsed.password !== parsed.confirm_password) {
-      dispatch(openSnackbar('Please make sure password is the same as confirm password'))
+      dispatch(openSnackbar({
+        message: 'Password and Confirm Password not match',
+        severity: 'error'
+      }))
     }
 
     dispatch(register({

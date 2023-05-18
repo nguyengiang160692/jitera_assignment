@@ -88,9 +88,19 @@ export const register = (input: RegisterData): AppThunk => async (dispatch, getS
     apiService.post('/user/register', { ...input }).then((response) => {
         const data = response.data;
 
+        dispatch(openSnackbar({
+            message: 'Successfully registered, redirect to login page in 5s',
+            severity: 'success',
+        }));
+
         // we not gonna login user after registration, we will redirect to login page instead
-        dispatch(registerSuccess(data))
+        setTimeout(() => {
+            dispatch(registerSuccess(data))
+        }, 5000);
     }).catch((error) => {
-        dispatch(openSnackbar(error.response.data.message));
+        dispatch(openSnackbar({
+            message: error.response.data.message,
+            severity: 'error',
+        }));
     });
 };

@@ -1,10 +1,14 @@
-import { UserSchema, IUser } from "./model/model";
+import { User, IUser } from "./model/model";
 
 export const createNewuser = async (model: IUser) => {
+    const newUser = new User(model);
+
     try {
-        const newUser = await model.save();
+        // Must have await ! this is very dangerous promise always forget
+        await newUser.save();
+
         return newUser;
-    } catch (err) {
-        throw err;
+    } catch (err: any) {
+        throw new Error(err.message);
     }
 }

@@ -1,8 +1,8 @@
-import mongoose, { CallbackError } from 'mongoose';
+import mongoose, { model, Schema, Document } from 'mongoose';
 import Joi from 'joi';
 import bcrypt from 'bcrypt'
 
-export interface IUser extends mongoose.Document {
+export interface IUser extends Document {
     username: string;
     password: string;
     balance: number;
@@ -10,25 +10,13 @@ export interface IUser extends mongoose.Document {
     token: string
 }
 
-export const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema<IUser>({
     username: { type: String, required: true, unique: true },
     password: { type: String, require: true },
     salt: { type: String, require: true },
     balance: { type: Number, default: 0 },
-    token: { type: String }
-});
-
-export const qualityUser = Joi.object({
-    username: Joi.string().required().max(32),
-    //require password complex
-    password: Joi.string()
-        .min(8)
-        .pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
-        .required()
-        .messages({
-            'string.pattern.base': 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number',
-        })
-})
+    token: { type: String },
+}, { timestamps: true });
 
 //pre save User to database make sure password is hashed and salted
 const saltRounds = 10;
@@ -36,7 +24,10 @@ const saltRounds = 10;
 //TODO: fix issue on saving without hash password
 
 UserSchema.pre<IUser>('save', async function (next) {
-    if (!this.isModified('password')) {
+    //only execute code below if password is modified or new user 
+    if (this.isNew) {
+        //go on below
+    } else if (!this.isModified('password')) {
         return next();
     }
 
@@ -59,6 +50,19 @@ UserSchema.pre<IUser>('save', async function (next) {
     }
 })
 
+export const User = model<IUser>('User', UserSchema);
+
+export const qualityUser = Joi.object({
+    username: Joi.string().required().max(32),
+    //require password complex
+    password: Joi.string()
+        .min(8)
+        .pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
+        .required()
+        .messages({
+            'string.pattern.base': 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number',
+        })
+})
 
 //TODO: create item schema, have status draft, published, sold, deleted
 // this item schema will have a reference to user schema if sold out
