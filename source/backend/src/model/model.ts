@@ -33,6 +33,8 @@ export const qualityUser = Joi.object({
 //pre save User to database make sure password is hashed and salted
 const saltRounds = 10;
 
+//TODO: fix issue on saving without hash password
+
 UserSchema.pre<IUser>('save', async function (next) {
     if (!this.isModified('password')) {
         return next();

@@ -3,6 +3,7 @@ import { AppThunk } from "./store";
 import apiService from "../lib/apiService";
 import { openSnackbar } from "./snackbar";
 
+//TODO: load from local storage and populate to initialState
 const initialState = {
     token: null,
     isAuthenticated: false,
