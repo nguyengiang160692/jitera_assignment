@@ -99,9 +99,10 @@ export const login = (input: LoginData): AppThunk => async (dispatch, getState) 
             severity: 'success',
         }));
 
-        dispatch(loadProfile());
+        dispatch(loadProfile(() => {
+            window.location.href = '/auction';
+        }));
 
-        // window.location.href = '/auction';
     }).catch((err) => {
         dispatch(openSnackbar({
             message: err.message,
@@ -110,7 +111,7 @@ export const login = (input: LoginData): AppThunk => async (dispatch, getState) 
     });
 };
 
-export const loadProfile = (): AppThunk => async (dispatch, getState) => {
+export const loadProfile = (cb: Function): AppThunk => async (dispatch, getState) => {
     // dispatch userLoading action
     dispatch(userLoading());
 
@@ -121,6 +122,8 @@ export const loadProfile = (): AppThunk => async (dispatch, getState) => {
 
     // dispatch loadProfileSuccess action
     dispatch(loadProfileSuccess(data));
+
+    cb && cb();
 }
 
 export const logout = (): AppThunk => async (dispatch, getState) => {
