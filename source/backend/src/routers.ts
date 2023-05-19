@@ -3,7 +3,7 @@
 
 import express from 'express';
 import { User, qualityUser } from './model/model';
-import { createNewUser, getUserByUsernameAndPassword } from './services';
+import { createNewUser, getUserByUsernameAndPassword, generateNewToken } from './services';
 import { ErrorResponse, SuccessResponse } from './http/respose'
 
 const router = express.Router();
@@ -68,10 +68,13 @@ router.post('/auth/login', async (req, res) => {
         let returnUser = await getUserByUsernameAndPassword(req.body.username, req.body.password)
 
         if (returnUser instanceof User) {
+            // ok let generate new token
+            const token = generateNewToken(returnUser.toJSON())
 
-            //TODO: reduce data return to client, let hidden password, etc...
             const response: SuccessResponse = {
-                data: returnUser,
+                data: {
+                    token: token
+                },
                 message: 'Login success!',
                 code: 200
             }

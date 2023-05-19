@@ -10,6 +10,7 @@ const apiService = axios.create({
 // Function to set the Bearer token in the request header
 export const setAuthToken = (token: string) => {
     if (token) {
+        console.log('set storage token to header')
         apiService.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } else {
         //remove properly the token from the header if the token is not valid

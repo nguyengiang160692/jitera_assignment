@@ -1,14 +1,21 @@
 import { createSlice, ThunkAction } from "@reduxjs/toolkit";
 import { AppThunk } from "./store";
-import apiService from "../lib/apiService";
+import apiService, { setAuthToken } from "../lib/apiService";
 import { openSnackbar } from "./snackbar";
 
 // use it to define state type instead ! I know in real world, we can not use this because maybe FE project is on different repo
 import { IUser } from '../../../backend/src/model/model'
 
-//TODO: load from local storage and populate to initialState
+const localToken = window.localStorage.getItem('token');
+
+if (localToken) {
+    setAuthToken(localToken);
+
+    //goto dashboard
+}
+
 const initialState = {
-    token: null,
+    token: localToken || null,
     isAuthenticated: false,
     isLoading: false,
     user: null,
@@ -25,14 +32,21 @@ export const authSlice = createSlice({
         loginSuccess: (state, action) => {
             state.isLoading = false;
             state.isAuthenticated = true;
+            state.token = action.payload.token;
+            // not set info yet, we will use API info to get user info later
+            //
+            //set the header with the token
+            setAuthToken(action.payload.token)
+            window.localStorage.setItem('token', action.payload.token);
+        },
+        loadProfileSuccess: (state, action) => {
             state.user = action.payload;
-            //TODO: save token to local storage
         },
         logoutSuccess: (state) => {
             state.isLoading = false;
             state.isAuthenticated = false;
             state.user = null;
-            //TODO: remove token from local storage
+            window.localStorage.removeItem('token');
         },
         registerSuccess: (state, action) => {
             window.location.href = '/';
@@ -66,9 +80,7 @@ export const login = (input: LoginData): AppThunk => async (dispatch, getState) 
 
     // fetch API
     const response = await apiService.post('/auth/login', { ...input }).then((response) => {
-        const data = response.data;
-
-        const user: IUser = data.data;
+        const data = response.data.data;
 
         // dispatch loginSuccess action
         dispatch(loginSuccess(data));

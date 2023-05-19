@@ -1,3 +1,4 @@
+import { Jwt, sign } from "jsonwebtoken";
 import { User, IUser } from "./model/model";
 import { MongoServerError } from 'mongodb'
 
@@ -33,4 +34,12 @@ export const getUserByUsernameAndPassword = async (username: string, inputPasswo
     }
 
     return false;
+}
+
+export const generateNewToken = (payload: any) => {
+    const secret: string = process.env.JWT_SECRET as string;
+
+    if (secret) {
+        return sign(payload, secret, { expiresIn: '24h' });
+    }
 }
