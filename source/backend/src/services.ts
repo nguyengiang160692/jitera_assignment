@@ -13,13 +13,15 @@ export const createNewUser = async (model: IUser) => {
         if (err instanceof MongoServerError && err.code == 11000) {
             throw new Error("User is already exists");
         }
+
+        throw new Error(err.message);
     }
 }
 
 // get user from database by username and hashed password from input is raw password
 export const getUserByUsernameAndPassword = async (username: string, inputPassword: string): Promise<typeof User | boolean> => {
     try {
-        let user: User = await User.findOne({ username: username });
+        let user: any = await User.findOne({ username: username });
 
         // compare input hashed password with hashed password in database
         const isMatch = await user?.comparePassword(inputPassword);

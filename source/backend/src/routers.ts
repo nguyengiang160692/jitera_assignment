@@ -5,6 +5,7 @@ import express from 'express';
 import { User, qualityUser } from './model/model';
 import { createNewUser, getUserByUsernameAndPassword, generateNewToken } from './services';
 import { ErrorResponse, SuccessResponse } from './http/respose'
+import passport from 'passport';
 
 const router = express.Router();
 
@@ -67,37 +68,60 @@ router.post('/auth/login', async (req, res) => {
     try {
         let returnUser = await getUserByUsernameAndPassword(req.body.username, req.body.password)
 
-        if (returnUser instanceof User) {
+        if (returnUser instanceof User && returnUser) {
             // ok let generate new token
             const token = generateNewToken(returnUser.toJSON())
 
-            const response: SuccessResponse = {
-                data: {
-                    token: token
-                },
-                message: 'Login success!',
-                code: 200
+            if (token) {
+                // save the token to database
+                returnUser.token = token || '';
+
+                await returnUser.save();
+
+                const response: SuccessResponse = {
+                    data: {
+                        token: token
+                    },
+                    message: 'Login success!',
+                    code: 200
+                }
+
+                return res.status(200).send(response)
             }
-
-            res.status(200).send(response)
-
-        } else {
-            res.status(400).send(<ErrorResponse>{
-                message: 'Wrong username or password!'
-            });
         }
+
+        res.status(400).send(<ErrorResponse>{
+            message: 'Wrong username or password!'
+        });
     } catch (err: any) {
         res.status(400).send(<ErrorResponse>{
             message: err.message,
         })
     }
+})
 
+router.get('/auth/profile', passport.authenticate('bearer', { session: false }), (req, res) => {
+    //load profile of user
+    const authUser = req.user;
+
+    if (authUser) {
+        //get the profile base on authUser
+        const response: SuccessResponse = {
+            data: authUser,
+            message: 'Get profile success!',
+            code: 200
+        }
+
+        return res.status(200).send(response)
+    }
 })
 
 //TODO implement this by revoke token
-router.post('/auth/logout', (req, res) => {
+router.post('/auth/logout', passport.authenticate('bearer', { session: false }), (req, res) => {
 
 })
+
+
 
 //TODO: route to deposit money (this is admin API, deposit for users)
 

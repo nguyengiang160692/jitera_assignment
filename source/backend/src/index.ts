@@ -7,6 +7,10 @@ import dotenv from 'dotenv';
 
 import cors from 'cors';
 
+import passport from 'passport';
+import { Strategy as BearerStrategy } from 'passport-http-bearer';
+import { IUser, User } from './model/model'
+
 dotenv.config();
 
 const app = express();
@@ -21,7 +25,8 @@ const db_host = process.env.MONGO_HOST;
 const db_port = process.env.MONGO_PORT;
 const db_source = process.env.MONGO_SOURCE;
 
-const mongoUri = `mongodb://${db_username}:${db_password}@${db_host}:${db_port}/${db_source}`;
+//specify mongodb uri authSource=admin
+const mongoUri = `mongodb://${db_username}:${db_password}@${db_host}:${db_port}/${db_source}?authSource=admin`;
 
 mongoose.connect(mongoUri, {}).then(() => {
     console.log('Database connected');
@@ -35,6 +40,19 @@ mongoose.connect(mongoUri, {}).then(() => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+//config passport
+passport.use(new BearerStrategy(
+    async function (token, done) {
+        try {
+            let user = await User.findOne({ token: token });
+            if (!user) { return done(null, false); }
+            return done(null, user, { scope: 'all' });
+        } catch (err: any) {
+            console.log('Error on passport.use', err.message);
+        }
+    }
+));
 
 app.use('/api', routers);
 

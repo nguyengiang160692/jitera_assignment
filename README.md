@@ -43,11 +43,10 @@ Create new database
 ```bash
 mongosh
 
+# authentication source in admin database, default is admin
 use admin
 # Login with your credentials
 db.auth('<username>', '<password>')
-
-use jitera_db
 
 db.createUser({
   user: 'jitera_user',
@@ -57,6 +56,7 @@ db.createUser({
   ],
 })
 
+use jitera_db
 ```
 
 ### Begin

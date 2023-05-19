@@ -54,7 +54,7 @@ export const authSlice = createSlice({
     },
 });
 
-export const { userLoading, loginSuccess, logoutSuccess, registerSuccess } = authSlice.actions;
+export const { userLoading, loginSuccess, logoutSuccess, registerSuccess, loadProfileSuccess } = authSlice.actions;
 
 export default authSlice.reducer;
 
@@ -88,6 +88,8 @@ export const login = (input: LoginData): AppThunk => async (dispatch, getState) 
             message: 'Login success!',
             severity: 'success',
         }));
+
+        dispatch(loadProfile());
     }).catch((err) => {
         dispatch(openSnackbar({
             message: err.message,
@@ -95,6 +97,19 @@ export const login = (input: LoginData): AppThunk => async (dispatch, getState) 
         }));
     });
 };
+
+export const loadProfile = (): AppThunk => async (dispatch, getState) => {
+    // dispatch userLoading action
+    dispatch(userLoading());
+
+    // fetch API
+    const response = await apiService.get('/auth/profile');
+
+    const data = await response.data;
+
+    // dispatch loadProfileSuccess action
+    dispatch(loadProfileSuccess(data));
+}
 
 export const logout = (): AppThunk => async (dispatch, getState) => {
     // dispatch userLoading action
