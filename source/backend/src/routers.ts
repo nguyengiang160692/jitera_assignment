@@ -100,14 +100,22 @@ router.post('/auth/login', async (req, res) => {
     }
 })
 
+interface Profile extends Express.User {
+    username?: string;
+    balance?: number;
+}
+
 router.get('/auth/profile', passport.authenticate('bearer', { session: false }), (req, res) => {
     //load profile of user
-    const authUser = req.user;
+    const authUser: Profile = req.user as Profile;
 
     if (authUser) {
         //get the profile base on authUser
         const response: SuccessResponse = {
-            data: authUser,
+            data: {
+                username: authUser.username,
+                balance: authUser.balance,
+            },
             message: 'Get profile success!',
             code: 200
         }
@@ -120,8 +128,6 @@ router.get('/auth/profile', passport.authenticate('bearer', { session: false }),
 router.post('/auth/logout', passport.authenticate('bearer', { session: false }), (req, res) => {
 
 })
-
-
 
 //TODO: route to deposit money (this is admin API, deposit for users)
 

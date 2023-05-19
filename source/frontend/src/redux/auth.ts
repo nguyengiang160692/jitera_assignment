@@ -7,18 +7,27 @@ import { openSnackbar } from "./snackbar";
 import { IUser } from '../../../backend/src/model/model'
 
 const localToken = window.localStorage.getItem('token');
+const user = window.localStorage.getItem('user');
 
 if (localToken) {
     setAuthToken(localToken);
+    console.log('Go to dashboard');
 
-    //goto dashboard
+    if (window.location.pathname === '/login' || window.location.pathname === '/register') {
+        window.location.href = '/auction';
+    }
+} else {
+    console.log('Go to login page');
+    if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+    }
 }
 
 const initialState = {
     token: localToken || null,
     isAuthenticated: false,
     isLoading: false,
-    user: null,
+    user: user ? JSON.parse(user) : null,
 };
 
 // HOW TO APP EFFECT Frontend
@@ -40,7 +49,8 @@ export const authSlice = createSlice({
             window.localStorage.setItem('token', action.payload.token);
         },
         loadProfileSuccess: (state, action) => {
-            state.user = action.payload;
+            state.user = action.payload.data;
+            window.localStorage.setItem('user', JSON.stringify(action.payload.data));
         },
         logoutSuccess: (state) => {
             state.isLoading = false;
@@ -90,6 +100,8 @@ export const login = (input: LoginData): AppThunk => async (dispatch, getState) 
         }));
 
         dispatch(loadProfile());
+
+        window.location.href = '/auction';
     }).catch((err) => {
         dispatch(openSnackbar({
             message: err.message,
