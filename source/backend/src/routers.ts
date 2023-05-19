@@ -69,8 +69,12 @@ router.post('/auth/login', async (req, res) => {
         let returnUser = await getUserByUsernameAndPassword(req.body.username, req.body.password)
 
         if (returnUser instanceof User && returnUser) {
-            // ok let generate new token
-            const token = generateNewToken(returnUser.toJSON())
+
+            // ok let generate new token, becauseful on payload, because JWT is not encrypted model
+            const token = generateNewToken({
+                username: returnUser.username,
+                balance: returnUser.balance,
+            })
 
             if (token) {
                 // save the token to database

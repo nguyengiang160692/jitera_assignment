@@ -101,7 +101,7 @@ export const login = (input: LoginData): AppThunk => async (dispatch, getState) 
 
         dispatch(loadProfile());
 
-        window.location.href = '/auction';
+        // window.location.href = '/auction';
     }).catch((err) => {
         dispatch(openSnackbar({
             message: err.message,

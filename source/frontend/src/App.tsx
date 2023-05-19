@@ -3,8 +3,9 @@ import { Routes, Route, Link, Outlet } from "react-router-dom";
 import Register from "./component/register";
 import Login from "./component/login";
 import Dashboard from "./component/dashboard";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Container, CssBaseline, Typography, Link as MaterialLink, Snackbar, Alert, AlertColor } from "@mui/material";
+import MainMenu from "./component/navigation/mainMenu";
+import { Breakpoint, createTheme, ThemeProvider } from '@mui/material/styles';
+import { Container, CssBaseline, Typography, Link as MaterialLink, Snackbar, Alert, AlertColor, Box, Grid } from "@mui/material";
 
 //redux
 import { Provider, useSelector } from "react-redux";
@@ -35,11 +36,15 @@ function App() {
   );
 }
 
-const Content: React.FC = () => {
+interface ContentProps {
+  maxWidth?: Breakpoint;
+}
+
+const Content = (props: ContentProps) => {
   return <>
     <Provider store={store}>
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth={props.maxWidth}>
           <CssBaseline />
           <Outlet />
           <Popup />
@@ -60,16 +65,16 @@ const Content: React.FC = () => {
 const AuctionLayout: React.FC = () => {
   return <>
     <>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/logout">Logout</Link>
-            </li>
-          </ul>
-        </nav>
-        <Content />
-      </div>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <MainMenu />
+        <Content maxWidth="md" />
+      </Box>
     </>
   </>
 }
@@ -77,9 +82,7 @@ const AuctionLayout: React.FC = () => {
 const Layout: React.FC = () => {
   return (
     <>
-      <div>
-        <Content />
-      </div>
+      <Content maxWidth="xs" />
     </>
   );
 };
