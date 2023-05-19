@@ -19,20 +19,27 @@ const defaultTheme = createTheme();
 
 function App() {
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Login />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="*" element={<div>Page is not found</div>} />
-        </Route>
-        <Route path="/auction" element={<AuctionLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="*" element={<div>Page is not found</div>} />
-        </Route>
-      </Routes>
-    </div>
+    <Box className="App" sx={{
+      background: '#bababa',
+      minHeight: '100vh'
+    }} >
+      <Provider store={store}>
+        <ThemeProvider theme={defaultTheme}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Login />} />
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="*" element={<div>Page is not found</div>} />
+            </Route>
+            <Route path="/auction" element={<AuctionLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="*" element={<div>Page is not found</div>} />
+            </Route>
+          </Routes>
+        </ThemeProvider>
+      </Provider>
+    </Box>
   );
 }
 
@@ -42,39 +49,45 @@ interface ContentProps {
 
 const Content = (props: ContentProps) => {
   return <>
-    <Provider store={store}>
-      <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth={props.maxWidth}>
-          <CssBaseline />
-          <Outlet />
-          <Popup />
-          <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 4 }}>
-            {'Copyright © '}
-            <MaterialLink color="inherit" href="https://mui.com/">
-              Myself
-            </MaterialLink>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-          </Typography>
-        </Container>
-      </ThemeProvider >
-    </Provider>
+    <Container component="main" {...props}>
+      <CssBaseline />
+      {/* BEGIN Here we Layout components */}
+      <Outlet />
+      {/* END Here we Layout components */}
+      <Popup />
+      <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 4 }}>
+        {'Copyright © '}
+        <MaterialLink color="inherit" href="https://mui.com/">
+          Myself
+        </MaterialLink>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    </Container>
   </>
 }
 
 const AuctionLayout: React.FC = () => {
   return <>
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <MainMenu />
-        <Content maxWidth="md" />
-      </Box>
+      <Container maxWidth={'md'} sx={{
+        outline: '1px solid',
+        paddingBottom: '50px',
+        background: 'white'
+      }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            margin: '0 auto'
+          }}
+        >
+          <MainMenu />
+          <Content maxWidth="md" />
+        </Box>
+      </Container>
+
     </>
   </>
 }
