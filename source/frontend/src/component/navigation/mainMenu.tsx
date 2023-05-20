@@ -18,6 +18,7 @@ import { RootState, useAppDispatch } from '../../redux/store';
 import Logo from './logo';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import depositModal from '../modal/depositModal';
+import addItemModal from '../modal/addItemModal';
 
 export default function MainMenu() {
     const dispatch = useAppDispatch()
@@ -28,6 +29,7 @@ export default function MainMenu() {
     const open = Boolean(anchorEl);
 
     const depositModalTrigger = useModal(depositModal);
+    const addItemModalTrigger = useModal(addItemModal);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -42,6 +44,10 @@ export default function MainMenu() {
 
     const showDepositModal = () => {
         depositModalTrigger.show()
+    }
+
+    const showAddItemModal = () => {
+        addItemModalTrigger.show()
     }
 
     const username = auth.user?.username as string || ''
@@ -122,7 +128,7 @@ export default function MainMenu() {
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={showAddItemModal}>
                         <Sell />Add Item
                     </MenuItem>
                     <MenuItem onClick={showDepositModal}>

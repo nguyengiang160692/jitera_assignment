@@ -7,6 +7,9 @@ import Login from "./component/login";
 import MainMenu from "./component/navigation/mainMenu";
 import Register from "./component/register";
 
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 //redux
 import { Provider, useSelector } from "react-redux";
 import { closeSnackbar } from "./redux/snackbar";
@@ -25,18 +28,20 @@ function App() {
       <Provider store={store}>
         <NiceModal.Provider>
           <ThemeProvider theme={defaultTheme}>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Login />} />
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-                <Route path="*" element={<div>Page is not found</div>} />
-              </Route>
-              <Route path="/auction" element={<AuctionLayout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="*" element={<div>Page is not found</div>} />
-              </Route>
-            </Routes>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Login />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="register" element={<Register />} />
+                  <Route path="*" element={<div>Page is not found</div>} />
+                </Route>
+                <Route path="/auction" element={<AuctionLayout />}>
+                  <Route index element={<Dashboard />} />
+                  <Route path="*" element={<div>Page is not found</div>} />
+                </Route>
+              </Routes>
+            </LocalizationProvider>
           </ThemeProvider>
         </NiceModal.Provider>
       </Provider>
