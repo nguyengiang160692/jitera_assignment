@@ -87,7 +87,6 @@ const AuctionLayout: React.FC = () => {
           <Content maxWidth="md" />
         </Box>
       </Container>
-
     </>
   </>
 }

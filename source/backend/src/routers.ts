@@ -2,7 +2,7 @@
 // Path: backend/routers.ts
 
 import express from 'express';
-import { User, qualityUser } from './model/model';
+import { User, IUser, qualityUser } from './model/model';
 import { createNewUser, getUserByUsernameAndPassword, generateNewToken } from './services';
 import { ErrorResponse, SuccessResponse } from './http/respose'
 import passport from 'passport';
@@ -129,8 +129,21 @@ router.get('/auth/profile', passport.authenticate('bearer', { session: false }),
 })
 
 //TODO implement this by revoke token
-router.post('/auth/logout', passport.authenticate('bearer', { session: false }), (req, res) => {
+router.post('/auth/logout', passport.authenticate('bearer', { session: false }), async (req, res) => {
+    const authUser: IUser = req.user as IUser;
 
+    if (authUser) {
+        authUser.token = '';
+        await authUser.save();
+
+        const response: SuccessResponse = {
+            data: null,
+            message: 'Logout success!',
+            code: 200
+        }
+
+        return res.status(200).send(response)
+    }
 })
 
 //TODO: route to deposit money (this is admin API, deposit for users)

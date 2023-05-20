@@ -16,8 +16,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { AppBar, Toolbar, Button, Link } from '@mui/material';
 import Logo from './logo';
+import { useAppDispatch } from '../../redux/store';
+import { logout } from '../../redux/auth';
 
 export default function MainMenu() {
+    const dispatch = useAppDispatch()
+
     const auth = useSelector((state: RootState) => state.auth)
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -28,6 +32,10 @@ export default function MainMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = () => {
+        dispatch(logout())
+    }
 
     const username = auth.user.username as string
 
@@ -113,7 +121,7 @@ export default function MainMenu() {
                         <AttachMoney /> Deposit
                     </MenuItem>
                     <Divider />
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={handleLogout}>
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>

@@ -1,5 +1,6 @@
 import { CampaignOutlined } from "@mui/icons-material";
 import { Typography, Stack, Box } from "@mui/material";
+import { css } from "@emotion/css";
 
 const Logo = () => {
     return <>
@@ -10,7 +11,14 @@ const Logo = () => {
             outline: '1px solid white',
             padding: '10px',
             borderRadius: '30px 4px 30px'
-        }}>
+        }}
+            className={css`
+                &:hover {
+                    cursor: pointer;
+                    box-shadow: 0 0 10px 0px black;
+                }
+            `}
+        >
             <Stack direction={'row'} alignContent={'center'}>
                 <CampaignOutlined />
                 <Typography sx={{ marginLeft: 1 }}>

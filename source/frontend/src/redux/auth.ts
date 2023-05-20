@@ -57,6 +57,8 @@ export const authSlice = createSlice({
             state.isAuthenticated = false;
             state.user = null;
             window.localStorage.removeItem('token');
+
+            window.location.href = '/';
         },
         registerSuccess: (state, action) => {
             window.location.href = '/';
