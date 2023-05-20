@@ -1,12 +1,19 @@
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
+import React from "react";
 import { Modal, Box, Typography, Button, TextField, Stack } from "@mui/material";
 import { useAppDispatch } from "../../redux/store";
 import { deposit } from "../../redux/auth";
-import { DateTimePicker } from "@mui/lab";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 export default NiceModal.create(({ }) => {
     const modal = useModal();
     const dispatch = useAppDispatch()
+
+    const today = dayjs()
+    const [dateTimePick, setDateTimePick] = React.useState<Dayjs | null>(today);
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -40,47 +47,49 @@ export default NiceModal.create(({ }) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Create new item to bid
-                    </Typography>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="name"
-                        label="Item name"
-                        name="name"
-                        autoComplete="name"
-                        autoFocus
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="start_price"
-                        label="Start price"
-                        name="start_price"
-                        autoComplete="start_price"
-                        type="text"
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                        autoFocus
-                    />
-                    <DateTimePicker label="Basic date time picker" />
-                    <Stack sx={{ mt: 1 }} direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                        >
-                            Add Item
-                        </Button>
-                        <Button variant="outlined" onClick={modal.hide}>
-                            Cancel
-                        </Button>
-                    </Stack>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Box sx={style}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Create new item to bid
+                        </Typography>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="name"
+                            label="Item name"
+                            name="name"
+                            autoComplete="name"
+                            autoFocus
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="start_price"
+                            label="Start price"
+                            name="start_price"
+                            autoComplete="start_price"
+                            type="text"
+                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                            autoFocus
+                        />
+                        <DateTimePicker sx={{ 'width': '100%' }} label="Choose publish time" defaultValue={today} value={dateTimePick} onChange={(newValue) => setDateTimePick(newValue)} />
+                        <Stack sx={{ mt: 1 }} direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                            >
+                                Add Item
+                            </Button>
+                            <Button variant="outlined" onClick={modal.hide}>
+                                Cancel
+                            </Button>
+                        </Stack>
+                    </Box>
                 </Box>
-            </Box>
+            </LocalizationProvider>
         </Modal>
     </>
 })
