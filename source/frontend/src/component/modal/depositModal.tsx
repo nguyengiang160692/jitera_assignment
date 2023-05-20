@@ -1,5 +1,5 @@
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
-import { Modal, Box, Typography } from "@mui/material";
+import { Modal, Box, Typography, Button, TextField, Stack } from "@mui/material";
 
 export default NiceModal.create(({ }) => {
     const modal = useModal();
@@ -16,6 +16,10 @@ export default NiceModal.create(({ }) => {
         p: 4,
     };
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+    }
 
     return <>
         <Modal
@@ -25,12 +29,32 @@ export default NiceModal.create(({ }) => {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Text in a modal
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                </Typography>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Deposit amount in USD
+                    </Typography>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="amount"
+                        label="amount"
+                        name="amount"
+                        autoComplete="amount"
+                        autoFocus
+                    />
+                    <Stack sx={{ mt: 1 }} direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                        >
+                            Deposit
+                        </Button>
+                        <Button variant="outlined" onClick={modal.hide}>
+                            Cancel
+                        </Button>
+                    </Stack>
+                </Box>
             </Box>
         </Modal>
     </>
