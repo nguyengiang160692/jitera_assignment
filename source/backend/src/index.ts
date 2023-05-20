@@ -1,6 +1,7 @@
 // Create expressjs application
 import express from 'express';
-import routers from './routers';
+import authRoutes from './routes/auth';
+import walletRoutes from './routes/wallet';
 import mongoose from 'mongoose';
 import { exit } from 'process';
 import dotenv from 'dotenv';
@@ -54,7 +55,8 @@ passport.use(new BearerStrategy(
     }
 ));
 
-app.use('/api', routers);
+app.use('/api/auth', authRoutes);
+app.use('/api/wallet', walletRoutes);
 
 //for debug purpose only 
 process.on('unhandledRejection', (reason, p) => {

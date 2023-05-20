@@ -21,7 +21,7 @@ export const setAuthToken = (token: string) => {
 setTimeout(() => {
     console.log('Try to connect API');
 
-    apiService.get('/index').then((res) => {
+    apiService.get('/auth/index').then((res) => {
         console.log(res.data);
     }).catch((err) => {
         console.log(err);

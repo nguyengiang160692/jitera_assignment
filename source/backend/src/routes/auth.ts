@@ -2,9 +2,9 @@
 // Path: backend/routers.ts
 
 import express from 'express';
-import { User, IUser, qualityUser } from './model/model';
-import { createNewUser, getUserByUsernameAndPassword, generateNewToken } from './services';
-import { ErrorResponse, SuccessResponse } from './http/respose'
+import { User, IUser, qualityUser } from '../model/model';
+import { createNewUser, getUserByUsernameAndPassword, generateNewToken } from '../services';
+import { ErrorResponse, SuccessResponse } from '../http/respose'
 import passport from 'passport';
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.get('/index', (req, res) => {
 //TODO: add middleware to check token on few routes
 
 // User register
-router.post('/auth/register', (req, res) => {
+router.post('/register', (req, res) => {
     //validate request
     if (!req.body) {
         res.status(400).send(<ErrorResponse>{
@@ -58,7 +58,7 @@ router.post('/auth/register', (req, res) => {
     }
 })
 
-router.post('/auth/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     if (!req.body) {
         return res.status(400).send(<ErrorResponse>{
             message: 'Content can not be empty!'
@@ -104,14 +104,9 @@ router.post('/auth/login', async (req, res) => {
     }
 })
 
-interface Profile extends Express.User {
-    username?: string;
-    balance?: number;
-}
-
-router.get('/auth/profile', passport.authenticate('bearer', { session: false }), (req, res) => {
+router.get('/profile', passport.authenticate('bearer', { session: false }), (req, res) => {
     //load profile of user
-    const authUser: Profile = req.user as Profile;
+    const authUser: IUser = req.user as IUser;
 
     if (authUser) {
         //get the profile base on authUser
@@ -129,7 +124,7 @@ router.get('/auth/profile', passport.authenticate('bearer', { session: false }),
 })
 
 //TODO implement this by revoke token
-router.post('/auth/logout', passport.authenticate('bearer', { session: false }), async (req, res) => {
+router.post('/logout', passport.authenticate('bearer', { session: false }), async (req, res) => {
     const authUser: IUser = req.user as IUser;
 
     if (authUser) {

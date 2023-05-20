@@ -30,7 +30,7 @@ export const snackbarSlice = createSlice({
 
             state.open = false;
             state.message = '';
-            state.severity = 'info';
+            state.severity = '';
         },
     },
 });

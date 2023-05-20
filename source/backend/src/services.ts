@@ -45,3 +45,17 @@ export const generateNewToken = (payload: any) => {
         return sign(payload, secret, { expiresIn: '24h' });
     }
 }
+
+export const addBalance = async (user: IUser, amount: number): Promise<Boolean> => {
+    try {
+        user.balance += amount;
+
+        await user.save();
+
+        return true;
+    } catch (err: any) {
+        console.log(err.message);
+
+        return false;
+    }
+}

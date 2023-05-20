@@ -80,6 +80,7 @@ export default function MainMenu() {
                                     >
                                         <Typography sx={{ minWidth: 100, marginRight: '10px' }}>Welcome, {username} </Typography>
                                         <Avatar sx={{ width: 32, height: 32, backgroundColor: 'black' }}>{username[0]?.toUpperCase()}</Avatar>
+                                        <Typography sx={{ minWidth: 100, marginLeft: '10px' }}> | Balance: ${auth.user?.balance} </Typography>
                                     </IconButton>
                                 </Tooltip>
                             </Stack>

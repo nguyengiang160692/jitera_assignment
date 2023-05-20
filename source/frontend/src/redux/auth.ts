@@ -1,5 +1,5 @@
 import { createSlice, ThunkAction } from "@reduxjs/toolkit";
-import { AppThunk } from "./store";
+import { AppThunk, store } from "./store";
 import apiService, { setAuthToken } from "../lib/apiService";
 import { openSnackbar } from "./snackbar";
 
@@ -168,4 +168,24 @@ export const register = (input: RegisterData): AppThunk => async (dispatch, getS
             severity: 'error',
         }));
     });
+};
+
+export const deposit = (amount: number, cb: Function): AppThunk => async (dispatch, getState) => {
+    // dispatch userLoading action
+    dispatch(userLoading());
+
+    // fetch API
+    const response = await apiService.post('/wallet/deposit', { amount });
+
+    const data = await response.data;
+
+    dispatch(openSnackbar({
+        message: 'Successfully deposited!',
+        severity: 'success',
+    }));
+
+    // dispatch loadProfileSuccess action
+    store.dispatch(loadProfile(() => { }))
+
+    cb && cb();
 };

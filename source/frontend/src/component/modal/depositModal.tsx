@@ -1,8 +1,11 @@
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { Modal, Box, Typography, Button, TextField, Stack } from "@mui/material";
+import { useAppDispatch } from "../../redux/store";
+import { deposit } from "../../redux/auth";
 
 export default NiceModal.create(({ }) => {
     const modal = useModal();
+    const dispatch = useAppDispatch()
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -18,7 +21,15 @@ export default NiceModal.create(({ }) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         const data = new FormData(event.currentTarget);
+        const parsed = Object.fromEntries(data)
+
+        const depositAmount: number = parseFloat(data.get('amount') as string)
+
+        if (depositAmount) {
+            dispatch(deposit(depositAmount, modal.hide))
+        }
     }
 
     return <>
