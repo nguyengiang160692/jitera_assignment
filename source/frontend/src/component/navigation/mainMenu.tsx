@@ -1,23 +1,21 @@
-import * as React from 'react';
+import { AttachMoney, Sell } from '@mui/icons-material';
+import Logout from '@mui/icons-material/Logout';
+import { AppBar, Stack, Toolbar } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { AttachMoneyRounded, CampaignOutlined, Sell, AttachMoney } from '@mui/icons-material';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import Logout from '@mui/icons-material/Logout';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import { Stack } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { AppBar, Toolbar, Button, Link } from '@mui/material';
-import Logo from './logo';
-import { useAppDispatch } from '../../redux/store';
 import { logout } from '../../redux/auth';
+import { RootState, useAppDispatch } from '../../redux/store';
+import Logo from './logo';
 
 export default function MainMenu() {
     const dispatch = useAppDispatch()
@@ -37,7 +35,7 @@ export default function MainMenu() {
         dispatch(logout())
     }
 
-    const username = auth.user.username as string
+    const username = auth.user?.username as string || ''
 
     return (
         <>
@@ -72,7 +70,7 @@ export default function MainMenu() {
                                         aria-expanded={open ? 'true' : undefined}
                                     >
                                         <Typography sx={{ minWidth: 100, marginRight: '10px' }}>Welcome, {username} </Typography>
-                                        <Avatar sx={{ width: 32, height: 32, backgroundColor: 'black' }}>{username[0].toUpperCase()}</Avatar>
+                                        <Avatar sx={{ width: 32, height: 32, backgroundColor: 'black' }}>{username[0]?.toUpperCase()}</Avatar>
                                     </IconButton>
                                 </Tooltip>
                             </Stack>

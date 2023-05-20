@@ -1,17 +1,18 @@
+import { Alert, AlertColor, Box, Container, CssBaseline, Snackbar } from "@mui/material";
+import { Breakpoint, ThemeProvider, createTheme } from '@mui/material/styles';
 import React from "react";
-import { Routes, Route, Link, Outlet } from "react-router-dom";
-import Register from "./component/register";
-import Login from "./component/login";
+import { Outlet, Route, Routes } from "react-router-dom";
 import Dashboard from "./component/dashboard";
+import Login from "./component/login";
 import MainMenu from "./component/navigation/mainMenu";
-import { Breakpoint, createTheme, ThemeProvider } from '@mui/material/styles';
-import { Container, CssBaseline, Typography, Link as MaterialLink, Snackbar, Alert, AlertColor, Box, Grid } from "@mui/material";
+import Register from "./component/register";
 
 //redux
 import { Provider, useSelector } from "react-redux";
-import { store, RootState, useAppDispatch } from "./redux/store";
 import { closeSnackbar } from "./redux/snackbar";
+import { RootState, store, useAppDispatch } from "./redux/store";
 
+import { Copyright } from "@mui/icons-material";
 import "./App.css";
 
 
@@ -19,10 +20,7 @@ const defaultTheme = createTheme();
 
 function App() {
   return (
-    <Box className="App" sx={{
-      background: '#bababa',
-      minHeight: '100vh'
-    }} >
+    <Box className="App">
       <Provider store={store}>
         <ThemeProvider theme={defaultTheme}>
           <Routes>
@@ -55,14 +53,6 @@ const Content = (props: ContentProps) => {
       <Outlet />
       {/* END Here we Layout components */}
       <Popup />
-      <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 4 }}>
-        {'Copyright © '}
-        <MaterialLink color="inherit" href="https://mui.com/">
-          Myself
-        </MaterialLink>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
     </Container>
   </>
 }
@@ -70,21 +60,20 @@ const Content = (props: ContentProps) => {
 const AuctionLayout: React.FC = () => {
   return <>
     <>
-      <Container maxWidth={'md'} sx={{
-        outline: '1px solid',
-        paddingBottom: '50px',
-        background: 'white'
-      }}>
+      <Container maxWidth={'md'}>
         <Box
           sx={{
+            minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            margin: '0 auto'
+            margin: '0 auto',
+            outline: '1px solid black',
           }}
         >
           <MainMenu />
           <Content maxWidth="md" />
+          <Copyright />
         </Box>
       </Container>
     </>
@@ -95,6 +84,7 @@ const Layout: React.FC = () => {
   return (
     <>
       <Content maxWidth="xs" />
+      <Copyright />
     </>
   );
 };
