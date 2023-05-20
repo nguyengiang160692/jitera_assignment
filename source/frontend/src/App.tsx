@@ -12,6 +12,7 @@ import { Provider, useSelector } from "react-redux";
 import { closeSnackbar } from "./redux/snackbar";
 import { RootState, store, useAppDispatch } from "./redux/store";
 
+import NiceModal from "@ebay/nice-modal-react";
 import { Copyright } from "@mui/icons-material";
 import "./App.css";
 
@@ -22,20 +23,22 @@ function App() {
   return (
     <Box className="App">
       <Provider store={store}>
-        <ThemeProvider theme={defaultTheme}>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Login />} />
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
-              <Route path="*" element={<div>Page is not found</div>} />
-            </Route>
-            <Route path="/auction" element={<AuctionLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="*" element={<div>Page is not found</div>} />
-            </Route>
-          </Routes>
-        </ThemeProvider>
+        <NiceModal.Provider>
+          <ThemeProvider theme={defaultTheme}>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Login />} />
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+                <Route path="*" element={<div>Page is not found</div>} />
+              </Route>
+              <Route path="/auction" element={<AuctionLayout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="*" element={<div>Page is not found</div>} />
+              </Route>
+            </Routes>
+          </ThemeProvider>
+        </NiceModal.Provider>
       </Provider>
     </Box>
   );

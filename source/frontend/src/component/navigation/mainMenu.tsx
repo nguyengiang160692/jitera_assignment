@@ -16,6 +16,8 @@ import { useSelector } from 'react-redux';
 import { logout } from '../../redux/auth';
 import { RootState, useAppDispatch } from '../../redux/store';
 import Logo from './logo';
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import depositModal from '../modal/depositModal';
 
 export default function MainMenu() {
     const dispatch = useAppDispatch()
@@ -24,6 +26,9 @@ export default function MainMenu() {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
+    const depositModalTrigger = useModal(depositModal);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -33,6 +38,10 @@ export default function MainMenu() {
 
     const handleLogout = () => {
         dispatch(logout())
+    }
+
+    const showDepositModal = () => {
+        depositModalTrigger.show()
     }
 
     const username = auth.user?.username as string || ''
@@ -115,7 +124,7 @@ export default function MainMenu() {
                     <MenuItem onClick={handleClose}>
                         <Sell />Add Item
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={showDepositModal}>
                         <AttachMoney /> Deposit
                     </MenuItem>
                     <Divider />
