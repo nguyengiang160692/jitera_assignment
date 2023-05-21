@@ -1,12 +1,15 @@
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
-import React from "react";
-import { Modal, Box, Typography, Button, TextField, Stack } from "@mui/material";
-import { useAppDispatch } from "../../redux/store";
-import { deposit } from "../../redux/auth";
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Stack, TextField, Typography } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs, { Dayjs } from 'dayjs';
+import React from "react";
+import { useAppDispatch } from "../../redux/store";
+import { ItemStatus } from "../../type/item";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { createItem } from "../../redux/item";
+
 
 export default NiceModal.create(({ }) => {
     const modal = useModal();
@@ -14,6 +17,12 @@ export default NiceModal.create(({ }) => {
 
     const today = dayjs()
     const [dateTimePick, setDateTimePick] = React.useState<Dayjs | null>(today);
+
+    const [status, setStatus] = React.useState(ItemStatus.DRAFT)
+
+    const handleChangeStatus = (event: SelectChangeEvent<ItemStatus>) => {
+        setStatus(event.target.value as ItemStatus);
+    }
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -33,11 +42,13 @@ export default NiceModal.create(({ }) => {
         const data = new FormData(event.currentTarget);
         const parsed = Object.fromEntries(data)
 
-        const depositAmount: number = parseFloat(data.get('amount') as string)
-
-        if (depositAmount) {
-            dispatch(deposit(depositAmount, modal.hide))
-        }
+        dispatch(createItem({
+            name: data.get('name') as string,
+            description: data.get('description') as string,
+            startPrice: parseFloat(data.get('start_price') as string),
+            status: status,
+            publishAt: dateTimePick?.toISOString() as string
+        }))
     }
 
     return <>
@@ -47,49 +58,81 @@ export default NiceModal.create(({ }) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Box sx={style}>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            Create new item to bid
-                        </Typography>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="name"
-                            label="Item name"
-                            name="name"
-                            autoComplete="name"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="start_price"
-                            label="Start price"
-                            name="start_price"
-                            autoComplete="start_price"
-                            type="text"
-                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                            autoFocus
-                        />
-                        <DateTimePicker sx={{ 'width': '100%' }} label="Choose publish time" defaultValue={today} value={dateTimePick} onChange={(newValue) => setDateTimePick(newValue)} />
-                        <Stack sx={{ mt: 1 }} direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                            >
-                                Add Item
-                            </Button>
-                            <Button variant="outlined" onClick={modal.hide}>
-                                Cancel
-                            </Button>
-                        </Stack>
+            <div>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Box sx={style}>
+                        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                                Create new item to bid
+                            </Typography>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="name"
+                                label="Item name"
+                                name="name"
+                                autoComplete="name"
+                                autoFocus
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="description"
+                                label="Item description"
+                                name="description"
+                                autoComplete="description"
+                                autoFocus
+                                multiline
+                                rows={2}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="start_price"
+                                label="Start price"
+                                name="start_price"
+                                autoComplete="start_price"
+                                type="text"
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 10 }}
+                                autoFocus
+                            />
+
+                            {/* select box for status */}
+                            <FormControl fullWidth sx={{ mt: 3, mb: 3 }}>
+                                <InputLabel id="status-label">Status</InputLabel>
+                                <Select
+                                    labelId="status-label"
+                                    id="status-select"
+                                    name="status"
+                                    value={status}
+                                    label="Age"
+                                    onChange={handleChangeStatus}
+                                >
+                                    <MenuItem value={ItemStatus.DRAFT}>Draft</MenuItem>
+                                    <MenuItem value={ItemStatus.PUBLISHED}>Publish</MenuItem>
+                                </Select>
+                            </FormControl>
+
+
+                            <DateTimePicker sx={{ 'width': '100%' }} label="Choose publish time" defaultValue={today} value={dateTimePick} onChange={(newValue) => setDateTimePick(newValue)} />
+                            <Stack sx={{ mt: 3 }} direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                >
+                                    Add Item
+                                </Button>
+                                <Button variant="outlined" onClick={modal.hide}>
+                                    Cancel
+                                </Button>
+                            </Stack>
+                        </Box>
                     </Box>
-                </Box>
-            </LocalizationProvider>
+                </LocalizationProvider>
+            </div>
         </Modal>
     </>
 })

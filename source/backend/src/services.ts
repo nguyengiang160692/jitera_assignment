@@ -1,6 +1,7 @@
 import { Jwt, sign } from "jsonwebtoken";
-import { User, IUser } from "./model/model";
+import { User, IUser } from "./model/user";
 import { MongoServerError } from 'mongodb'
+import { Item, IItem } from "./model/item";
 
 export const createNewUser = async (model: IUser) => {
     const newUser = new User(model);
@@ -59,3 +60,49 @@ export const addBalance = async (user: IUser, amount: number): Promise<Boolean> 
         return false;
     }
 }
+
+// add new item to bid on the list
+
+export const addItemToExchange = async (item: IItem, user: IUser): Promise<Boolean> => {
+
+    try {
+        const newItem = new Item(item);
+        newItem.owner = user._id;
+
+        await newItem.save();
+
+        return true;
+    } catch (err: any) {
+        console.log(err.message);
+
+        return false;
+    }
+}
+
+// pagination   
+export const getItemsOnExchangePagination = async (): Promise<IItem[]> => {
+    try {
+        let items: any = await Item.paginate({}, { page: 1, limit: 10 });
+
+        return items;
+    } catch (err: any) {
+        console.log(err.message);
+
+        return [];
+    }
+}
+
+export const bidItemOnExchange = async (item: IItem, bidder: IUser, amount: number): Promise<Boolean> => {
+    try {
+        item.lastBidder = bidder._id;
+        item.lastBidAmount = amount;
+        await item.save();
+
+        return true;
+    }
+    catch (err: any) {
+        console.log(err.message);
+
+        return false;
+    }
+}  

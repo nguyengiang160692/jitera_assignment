@@ -2,6 +2,7 @@
 import express from 'express';
 import authRoutes from './routes/auth';
 import walletRoutes from './routes/wallet';
+import itemManagementRoutes from './routes/item_management';
 import mongoose from 'mongoose';
 import { exit } from 'process';
 import dotenv from 'dotenv';
@@ -10,7 +11,7 @@ import cors from 'cors';
 
 import passport from 'passport';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
-import { IUser, User } from './model/model'
+import { IUser, User } from './model/user'
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ passport.use(new BearerStrategy(
 
 app.use('/api/auth', authRoutes);
 app.use('/api/wallet', walletRoutes);
+app.use('/api/item', itemManagementRoutes);
 
 //for debug purpose only 
 process.on('unhandledRejection', (reason, p) => {

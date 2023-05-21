@@ -4,7 +4,7 @@ import apiService, { setAuthToken } from "../lib/apiService";
 import { openSnackbar } from "./snackbar";
 
 // use it to define state type instead ! I know in real world, we can not use this because maybe FE project is on different repo
-import { IUser } from '../../../backend/src/model/model'
+import { IUser } from '../../../backend/src/model/user'
 
 const localToken = window.localStorage.getItem('token');
 const user = window.localStorage.getItem('user');

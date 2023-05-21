@@ -2,7 +2,7 @@
 // Path: backend/routers.ts
 
 import express from 'express';
-import { User, IUser, qualityUser } from '../model/model';
+import { User, IUser, qualityUser } from '../model/user';
 import { createNewUser, getUserByUsernameAndPassword, generateNewToken } from '../services';
 import { ErrorResponse, SuccessResponse } from '../http/respose'
 import passport from 'passport';

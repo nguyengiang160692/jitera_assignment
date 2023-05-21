@@ -28,7 +28,8 @@ npm run dev
 
 Tech lib uses in backend:
 
-- nvm (node version management) => require node vereion 18
+- Laradock (docker for development, mostly I use for database mongodb in this assignment)
+- nvm (node version management) => require node version 18
 - Nodejs
 - Express
 - Mongoose
@@ -37,6 +38,7 @@ Tech lib uses in backend:
 - Bcryptjs (Hash & salt)
 - Jsonwebtoken
 - Nodemon (develop process)
+- Mongoose-paginate-v2 (paginate data)
 
 Create new database
 

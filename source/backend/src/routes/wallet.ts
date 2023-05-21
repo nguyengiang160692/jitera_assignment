@@ -1,7 +1,7 @@
 import express from "express";
 import passport from "passport";
 import { addBalance } from '../services'
-import { IUser } from "../model/model";
+import { IUser } from "../model/user";
 
 import Joi from 'joi';
 
