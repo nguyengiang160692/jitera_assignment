@@ -50,7 +50,7 @@ export const fetchItems = (): AppThunk => async (dispatch, getState) => {
     }
 }
 
-export const createItem = (item: IItem): AppThunk => async (dispatch, getState) => {
+export const createItem = (item: IItem, cb?: Function): AppThunk => async (dispatch, getState) => {
     try {
         await apiService.post('/item', item);
 
@@ -61,6 +61,8 @@ export const createItem = (item: IItem): AppThunk => async (dispatch, getState) 
             message: 'Create item successfully',
             severity: 'success'
         }))
+
+        cb && cb();
     } catch (error: any) {
         console.log(error);
 

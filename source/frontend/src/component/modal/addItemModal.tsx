@@ -48,7 +48,7 @@ export default NiceModal.create(({ }) => {
             startPrice: parseFloat(data.get('start_price') as string),
             status: status,
             publishAt: dateTimePick?.toISOString() as string
-        }))
+        }, modal.hide))
     }
 
     return <>
