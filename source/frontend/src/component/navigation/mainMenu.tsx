@@ -58,7 +58,7 @@ export default function MainMenu() {
                 position="static"
                 color="default"
                 elevation={0}
-                sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+                sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}`, background: '#66aeff' }}
             >
                 <Toolbar>
                     <Box key={'div'} sx={{ minWidth: '100%' }}>
@@ -85,7 +85,7 @@ export default function MainMenu() {
                                 >
                                     <Typography sx={{ minWidth: 100, marginRight: '10px' }}>Welcome, {username} </Typography>
                                     <Avatar sx={{ width: 32, height: 32, backgroundColor: 'black' }}>{username[0]?.toUpperCase()}</Avatar>
-                                    <Typography sx={{ minWidth: 100, marginLeft: '10px' }}> | Balance: ${auth.user?.balance} </Typography>
+                                    <Typography sx={{ minWidth: 100, marginLeft: '10px' }}> | Balance: ${auth.user?.balance.toLocaleString()} </Typography>
                                 </IconButton>
                             </Tooltip>
                         </Stack>

@@ -31,7 +31,7 @@ const ItemSchema = new Schema<IItem>({
     name: { type: String, required: true },
     description: { type: String, required: false },
     startPrice: { type: Number, required: true, min: 10 },
-    currentPrice: { type: Number, required: false, min: 10 },
+    currentPrice: { type: Number, required: true, min: 10 },
     status: { type: Number, enum: [0, 1, 2], default: 0 },
     owner: { type: String, required: true, ref: 'User' },
     lastBidder: { type: String, required: false, ref: 'User' },

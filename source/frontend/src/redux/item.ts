@@ -3,24 +3,44 @@ import apiService from '../lib/apiService';
 import { AppThunk, store } from './store';
 import { ItemStatus } from '../type/item';
 import { openSnackbar } from './snackbar';
-import { AxiosError } from 'axios';
+import { Pagination } from '@mui/material';
 
-const initialState = {
-    items: [],
-    item: {},
-    loading: false,
-    error: null
-}
 
 export interface IItem {
     name: string;
     description?: string;
     startPrice: number;
+    currentPrice?: number;
     status: ItemStatus;
     publishAt: string;
 }
 
-export const ItemSlice = createSlice({
+export interface Pagination {
+    docs: any[];
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+    limit: number;
+    nextPage: number;
+    page: number;
+    pagingCounter: number;
+    prevPage: number;
+    totalDocs: number;
+    totalPages: number;
+}
+
+export interface ItemPagination extends Pagination {
+    docs: IItem[];
+}
+
+const initialState = {
+    paginate: <ItemPagination>{},
+    selectedItem: <IItem>{},
+    loading: false,
+    error: null
+}
+
+
+export const itemSlice = createSlice({
     name: 'item',
     initialState,
     reducers: {
@@ -29,13 +49,17 @@ export const ItemSlice = createSlice({
         },
         loadedItems: (state, action) => {
             state.loading = false;
-            state.items = action.payload;
+            console.log(action.payload);
+
+            state.paginate = action.payload;
+        },
+        selectedItem: (state, action) => {
+            state.selectedItem = action.payload;
         }
     },
 });
 
-export const { loadedItems, loadingItems } = ItemSlice.actions;
-
+export const { loadedItems, loadingItems, selectedItem } = itemSlice.actions;
 
 // create thunk function to fetch data from backend
 export const fetchItems = (): AppThunk => async (dispatch, getState) => {
@@ -43,8 +67,9 @@ export const fetchItems = (): AppThunk => async (dispatch, getState) => {
         dispatch(loadingItems());
 
         const data = await apiService.get('/item')
+        const paginate = data?.data?.data || {};
 
-        dispatch(loadedItems(data));
+        dispatch(loadedItems(paginate));
     } catch (error) {
         console.log(error);
     }
@@ -74,4 +99,4 @@ export const createItem = (item: IItem, cb?: Function): AppThunk => async (dispa
 }
 
 
-export default ItemSlice.reducer;
+export default itemSlice.reducer;

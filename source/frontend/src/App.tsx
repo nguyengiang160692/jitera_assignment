@@ -51,6 +51,8 @@ function App() {
 
 interface ContentProps {
   maxWidth?: Breakpoint;
+  fullWidth?: boolean;
+  sx?: any;
 }
 
 const Content = (props: ContentProps) => {
@@ -68,7 +70,7 @@ const Content = (props: ContentProps) => {
 const AuctionLayout: React.FC = () => {
   return <>
     <>
-      <Container maxWidth={'md'}>
+      <Container maxWidth={'lg'}>
         <Box
           sx={{
             minHeight: '100vh',
@@ -80,7 +82,7 @@ const AuctionLayout: React.FC = () => {
           }}
         >
           <MainMenu />
-          <Content maxWidth="md" />
+          <Content />
           <Copyright />
         </Box>
       </Container>

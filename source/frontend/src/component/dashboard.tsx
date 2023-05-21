@@ -5,7 +5,7 @@ import ItemDataTable from "./datatable/item";
 function Dashboard() {
   return (
     <>
-      <Container fixed>
+      <Container disableGutters>
         <Box sx={{ marginTop: '10px', minHeight: '80vh' }}>
           <Stack direction="column" spacing={2}>
             <Grid container>

@@ -99,25 +99,7 @@ export default NiceModal.create(({ }) => {
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 10 }}
                                 autoFocus
                             />
-
-                            {/* select box for status */}
-                            <FormControl fullWidth sx={{ mt: 3, mb: 3 }}>
-                                <InputLabel id="status-label">Status</InputLabel>
-                                <Select
-                                    labelId="status-label"
-                                    id="status-select"
-                                    name="status"
-                                    value={status}
-                                    label="Age"
-                                    onChange={handleChangeStatus}
-                                >
-                                    <MenuItem value={ItemStatus.DRAFT}>Draft</MenuItem>
-                                    <MenuItem value={ItemStatus.PUBLISHED}>Publish</MenuItem>
-                                </Select>
-                            </FormControl>
-
-
-                            <DateTimePicker sx={{ 'width': '100%' }} label="Choose publish time" defaultValue={today} value={dateTimePick} onChange={(newValue) => setDateTimePick(newValue)} />
+                            <DateTimePicker sx={{ 'width': '100%', mt: 3 }} label="Choose publish time" defaultValue={today} value={dateTimePick} onChange={(newValue) => setDateTimePick(newValue)} />
                             <Stack sx={{ mt: 3 }} direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
                                 <Button
                                     type="submit"

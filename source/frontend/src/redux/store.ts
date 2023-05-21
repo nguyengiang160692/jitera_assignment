@@ -2,11 +2,13 @@ import { configureStore, ThunkAction, Action, } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import authReducer from './auth'
 import snackbarReducer from './snackbar';
+import itemReducer from './item';
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         snackBar: snackbarReducer,
+        item: itemReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -18,6 +20,7 @@ export const store = configureStore({
 export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector = (state: RootState) => state;
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<

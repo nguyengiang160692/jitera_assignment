@@ -1,10 +1,13 @@
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { Modal, Box, Typography, Button, TextField, Stack } from "@mui/material";
 import { useAppDispatch } from "../../redux/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 export default NiceModal.create(({ }) => {
     const modal = useModal();
     const dispatch = useAppDispatch()
+    const selectedItem = useSelector((state: RootState) => state.item.selectedItem)
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -36,8 +39,17 @@ export default NiceModal.create(({ }) => {
         >
             <Box sx={style}>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Bid amount in USD for this item
+                    <Typography id="modal-modal-title">
+                        Bid "{selectedItem?.name}"
+                    </Typography>
+                    <Typography id="modal-modal-description" fontSize={'13px'} sx={{ mt: 2, color: 'red' }}>
+                        {selectedItem?.description}
+                    </Typography>
+                    <Typography id="modal-modal-description" fontSize={'13px'} sx={{ mt: 2, color: 'grey' }}>
+                        Start bidding <b>${selectedItem?.startPrice.toLocaleString()}</b>
+                    </Typography>
+                    <Typography>
+                        Current price: <b>${selectedItem?.currentPrice?.toLocaleString()}</b>
                     </Typography>
                     <TextField
                         margin="normal"

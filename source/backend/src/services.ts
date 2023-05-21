@@ -1,7 +1,7 @@
 import { Jwt, sign } from "jsonwebtoken";
 import { User, IUser } from "./model/user";
 import { MongoServerError } from 'mongodb'
-import { Item, IItem } from "./model/item";
+import { Item, IItem, ItemStatus } from "./model/item";
 
 export const createNewUser = async (model: IUser) => {
     const newUser = new User(model);
@@ -67,6 +67,17 @@ export const addItemToExchange = async (item: IItem, user: IUser): Promise<Boole
 
     try {
         const newItem = new Item(item);
+
+        //compare current publish time with current time
+        //if greater than now, then set as draft wait to publish
+
+        if (newItem.publishAt > new Date()) {
+            newItem.status = ItemStatus.DRAFT;
+        } else {
+            newItem.status = ItemStatus.PUBLISHED;
+        }
+
+        newItem.currentPrice = item.startPrice;
         newItem.owner = user._id;
 
         await newItem.save();
@@ -82,7 +93,8 @@ export const addItemToExchange = async (item: IItem, user: IUser): Promise<Boole
 // pagination   
 export const getItemsOnExchangePagination = async (): Promise<IItem[]> => {
     try {
-        let items: any = await Item.paginate({}, { page: 1, limit: 10 });
+        // temporary forget about pagination :D 
+        let items: any = await Item.paginate({}, { page: 1, limit: 9999999 });
 
         return items;
     } catch (err: any) {
