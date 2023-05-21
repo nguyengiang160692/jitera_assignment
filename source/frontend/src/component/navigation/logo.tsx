@@ -22,7 +22,7 @@ const Logo = () => {
             <Stack direction={'row'} alignContent={'center'}>
                 <CampaignOutlined />
                 <Typography sx={{ marginLeft: 1 }}>
-                    Black Market
+                    Howard Market
                 </Typography>
             </Stack>
         </Box>

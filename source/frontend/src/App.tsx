@@ -99,7 +99,7 @@ const Layout: React.FC = () => {
 
 const Popup: React.FC = () => {
 
-  const snackBar = useSelector((state: RootState) => state.snackBar)
+  const snackBar: any = useSelector((state: RootState) => state.snackBar)
   const dispatch = useAppDispatch()
 
   return <>

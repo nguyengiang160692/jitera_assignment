@@ -54,19 +54,18 @@ export default function MainMenu() {
 
     return (
         <>
-            <Container fixed>
-                <AppBar
-                    position="static"
-                    color="default"
-                    elevation={0}
-                    sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-                >
-                    <Toolbar>
-                        <Box key={'div'} sx={{ minWidth: '100%' }}>
-                            <Stack direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                                <Logo />
-                                <nav>
-                                    {/* <Link
+            <AppBar
+                position="static"
+                color="default"
+                elevation={0}
+                sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+            >
+                <Toolbar>
+                    <Box key={'div'} sx={{ minWidth: '100%' }}>
+                        <Stack direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                            <Logo />
+                            <nav>
+                                {/* <Link
                                     variant="button"
                                     color="text.primary"
                                     href="#"
@@ -74,75 +73,74 @@ export default function MainMenu() {
                                 >
                                     Bidding Items
                                 </Link> */}
-                                </nav>
-                                <Tooltip title="Account settings">
-                                    <IconButton
-                                        onClick={handleClick}
-                                        size="small"
-                                        sx={{ ml: 2 }}
-                                        aria-controls={open ? 'account-menu' : undefined}
-                                        aria-haspopup="true"
-                                        aria-expanded={open ? 'true' : undefined}
-                                    >
-                                        <Typography sx={{ minWidth: 100, marginRight: '10px' }}>Welcome, {username} </Typography>
-                                        <Avatar sx={{ width: 32, height: 32, backgroundColor: 'black' }}>{username[0]?.toUpperCase()}</Avatar>
-                                        <Typography sx={{ minWidth: 100, marginLeft: '10px' }}> | Balance: ${auth.user?.balance} </Typography>
-                                    </IconButton>
-                                </Tooltip>
-                            </Stack>
-                        </Box>
-                    </Toolbar>
-                </AppBar>
-                <Menu
-                    anchorEl={anchorEl}
-                    id="account-menu"
-                    open={open}
-                    onClose={handleClose}
-                    onClick={handleClose}
-                    PaperProps={{
-                        elevation: 0,
-                        sx: {
-                            overflow: 'visible',
-                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                            mt: 1.5,
-                            '& .MuiAvatar-root': {
-                                width: 32,
-                                height: 32,
-                                ml: -0.5,
-                                mr: 1,
-                            },
-                            '&:before': {
-                                content: '""',
-                                display: 'block',
-                                position: 'absolute',
-                                top: 0,
-                                right: 14,
-                                width: 10,
-                                height: 10,
-                                bgcolor: 'background.paper',
-                                transform: 'translateY(-50%) rotate(45deg)',
-                                zIndex: 0,
-                            },
+                            </nav>
+                            <Tooltip title="Account settings">
+                                <IconButton
+                                    onClick={handleClick}
+                                    size="small"
+                                    sx={{ ml: 2 }}
+                                    aria-controls={open ? 'account-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
+                                >
+                                    <Typography sx={{ minWidth: 100, marginRight: '10px' }}>Welcome, {username} </Typography>
+                                    <Avatar sx={{ width: 32, height: 32, backgroundColor: 'black' }}>{username[0]?.toUpperCase()}</Avatar>
+                                    <Typography sx={{ minWidth: 100, marginLeft: '10px' }}> | Balance: ${auth.user?.balance} </Typography>
+                                </IconButton>
+                            </Tooltip>
+                        </Stack>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+            <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                    elevation: 0,
+                    sx: {
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 1.5,
+                        '& .MuiAvatar-root': {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
                         },
-                    }}
-                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                >
-                    <MenuItem onClick={showAddItemModal}>
-                        <Sell />Add Item
-                    </MenuItem>
-                    <MenuItem onClick={showDepositModal}>
-                        <AttachMoney /> Deposit
-                    </MenuItem>
-                    <Divider />
-                    <MenuItem onClick={handleLogout}>
-                        <ListItemIcon>
-                            <Logout fontSize="small" />
-                        </ListItemIcon>
-                        Logout
-                    </MenuItem>
-                </Menu>
-            </Container>
+                        '&:before': {
+                            content: '""',
+                            display: 'block',
+                            position: 'absolute',
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: 'background.paper',
+                            transform: 'translateY(-50%) rotate(45deg)',
+                            zIndex: 0,
+                        },
+                    },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+                <MenuItem onClick={showAddItemModal}>
+                    <Sell />Add Item
+                </MenuItem>
+                <MenuItem onClick={showDepositModal}>
+                    <AttachMoney /> Deposit
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleLogout}>
+                    <ListItemIcon>
+                        <Logout fontSize="small" />
+                    </ListItemIcon>
+                    Logout
+                </MenuItem>
+            </Menu>
         </>
     );
 }
