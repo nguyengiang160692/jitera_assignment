@@ -2,8 +2,17 @@ import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { useModal } from '@ebay/nice-modal-react';
 import bidModal from '../modal/bidModal';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../redux/store';
+import { fetchItems } from '../../redux/item';
 
 const ItemDataTable = () => {
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(fetchItems())
+    }, []);
+
     const bidModalTrigger = useModal(bidModal);
 
     const bidHandleClick = (itemId: string) => {

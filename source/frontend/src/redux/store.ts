@@ -8,6 +8,10 @@ export const store = configureStore({
         auth: authReducer,
         snackBar: snackbarReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false
+        }),
 })
 
 // default store dispatch will use ThunkDispatch type ! 
