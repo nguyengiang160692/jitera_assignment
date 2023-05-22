@@ -23,6 +23,7 @@ export interface IItem extends Document {
     owner: string;
     lastBidder: string;
     publishAt: Date;
+    lastBidAt: Date;
     biddingHistory: IItemHistory[];
 }
 
@@ -35,6 +36,7 @@ const ItemSchema = new Schema<IItem>({
     owner: { type: String, required: true, ref: 'User' },
     lastBidder: { type: String, required: false, ref: 'User' },
     publishAt: { type: Date, required: false },
+    lastBidAt: { type: Date, required: false },
     biddingHistory: {
         type: [{
             bidder: { type: String, required: true, ref: 'User' },

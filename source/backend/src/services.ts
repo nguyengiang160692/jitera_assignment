@@ -107,6 +107,7 @@ export const bidItemOnExchange = async (item: IItem, bidder: IUser, bidPrice: nu
     try {
         item.lastBidder = bidder._id;
         item.currentPrice = bidPrice;
+        item.lastBidAt = new Date();
 
         item.biddingHistory.push({
             bidder: bidder._id,

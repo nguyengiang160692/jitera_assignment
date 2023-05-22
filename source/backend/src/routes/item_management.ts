@@ -99,6 +99,15 @@ router.put('/:id/bid', async (req, res) => {
         });
     }
 
+    //check if last bid at compare with current time must be 5 secs 
+    let nextBidAvailableSecs = bidItem.lastBidAt.getTime() + (5 * 1000);
+    let currentBidSecs = (new Date()).getTime()
+    if (nextBidAvailableSecs > currentBidSecs) {
+        return res.status(400).send({
+            message: "You can not bid now!"
+        });
+    }
+
     try {
         await bidItemOnExchange(bidItem, user, bidPrice);
         return res.status(200).send({
