@@ -13,7 +13,7 @@ export default NiceModal.create(({ }) => {
     const dispatch = useAppDispatch()
     const selectedItem = useSelector((state: RootState) => state.item.selectedItem)
 
-    const [bidPrice, setBidPrice] = React.useState<number>(0)
+    const [bidPrice, setBidPrice] = React.useState<number>(selectedItem?.currentPrice || selectedItem?.startPrice || 0)
     const [threshold, setThreshold] = React.useState<number>(100)
 
     const handleThresHoldChange = (amount: number) => () => {
@@ -78,8 +78,8 @@ export default NiceModal.create(({ }) => {
                         value={bidPrice}
                         onInput={(event: React.ChangeEvent<HTMLInputElement>) => { setBidPrice(parseFloat(event.target.value)) }}
                     />
-                    <Stack direction="row" sx={{ mt: 2, mb: 2 }} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                        <IconButton onClick={handleThresHoldChange(-1 * threshold)}>
+                    <Stack direction="row" sx={{ mt: 2, mb: 4 }} alignItems={'center'} justifyContent={'space-between'}>
+                        <IconButton onClick={handleThresHoldChange(-1 * threshold)} color="error">
                             <IndeterminateCheckBoxRoundedIcon />
                         </IconButton>
                         <TextField
@@ -91,7 +91,7 @@ export default NiceModal.create(({ }) => {
                             defaultValue={threshold}
                             onInput={(event: React.ChangeEvent<HTMLInputElement>) => { setThreshold(parseFloat(event.target.value)) }}
                         />
-                        <IconButton onClick={handleThresHoldChange(threshold)}>
+                        <IconButton onClick={handleThresHoldChange(threshold)} color="success">
                             <AddBoxRoundedIcon />
                         </IconButton>
                     </Stack>
