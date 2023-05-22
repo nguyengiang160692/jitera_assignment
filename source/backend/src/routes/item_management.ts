@@ -84,8 +84,15 @@ router.get('/', async (req, res) => {
 router.put('/:id/publish', middlewareValidateItem, async (req, res) => {
     //get user from passport
     let id = req.params.id;
+    let user = req.user as IUser;
 
     let bidItem: IItem | null = await Item.findById(id);
+
+    if (bidItem?.owner != user._id) {
+        return res.status(400).send(<ErrorResponse>{
+            message: "You can not publish this item!"
+        });
+    }
 
     if (bidItem) {
         bidItem.publishAt = new Date();

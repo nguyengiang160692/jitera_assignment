@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 const ItemDataTable = () => {
     const dispatch = useAppDispatch()
     const paginate = useAppSelector((state: RootState) => state.item.paginate)
+    const auth = useAppSelector((state: RootState) => state.auth)
     const [openDialog, setOpenDialog] = useState(false)
 
     useEffect(() => {
@@ -49,6 +50,14 @@ const ItemDataTable = () => {
             field: 'name',
             headerName: 'Name',
             flex: 3,
+        },
+        {
+            field: 'owner',
+            headerName: 'Owner',
+            flex: 2,
+            renderCell: (params: GridRenderCellParams) => {
+                return <span>{params.row.owner.username}</span>
+            }
         },
         {
             field: 'startPrice',
@@ -96,7 +105,7 @@ const ItemDataTable = () => {
             flex: 1,
             renderCell: (params: GridRenderCellParams) => (
                 <>
-                    {params.row.status == 0 && <Button
+                    {params.row.status == 0 && auth.user?.username === params.row.owner?.username && <Button
                         variant="contained"
                         color='success'
                         startIcon={<PlayArrow />}
@@ -106,7 +115,7 @@ const ItemDataTable = () => {
                     >
                         Publish
                     </Button>}
-                    {params.row.status == 1 && <Button
+                    {params.row.status == 1 && auth.user?.username != params.row.owner?.username && <Button
                         variant="contained"
                         size="small"
                         style={{ marginLeft: 16 }}
