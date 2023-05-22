@@ -63,7 +63,7 @@ app.use('/api/item', itemManagementRoutes);
 //for debug purpose only 
 process.on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at:', p, 'reason:', reason)
-    process.exit(1)
+    // process.exit(1)
 });
 
 app.listen(port, () => {
