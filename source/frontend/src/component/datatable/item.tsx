@@ -8,7 +8,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { RootState, useAppDispatch, useAppSelector } from '../../redux/store';
 
-import { fetchItems, publishItem, selectedItem } from '../../redux/item';
+import { IItem, fetchItems, publishItem, selectedItem } from '../../redux/item';
 
 import bidModal from '../modal/bidModal';
 import { useEffect, useState } from 'react';
@@ -115,15 +115,18 @@ const ItemDataTable = () => {
                     >
                         Publish
                     </Button>}
-                    {params.row.status == 1 && auth.user?.username != params.row.owner?.username && <Button
-                        variant="contained"
-                        size="small"
-                        style={{ marginLeft: 16 }}
-                        tabIndex={params.hasFocus ? 0 : -1}
-                        onClick={() => bidHandleClick(params.row)}
-                    >
-                        Bid
-                    </Button>}
+                    {params.row.status == 1
+                        && auth.user?.username != params.row.owner?.username
+                        && dayjs(params.row.endAt).isAfter(dayjs())
+                        && <Button
+                            variant="contained"
+                            size="small"
+                            style={{ marginLeft: 16 }}
+                            tabIndex={params.hasFocus ? 0 : -1}
+                            onClick={() => bidHandleClick(params.row)}
+                        >
+                            Bid
+                        </Button>}
                 </>
             )
         },

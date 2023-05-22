@@ -148,6 +148,12 @@ router.put('/:id/bid', middlewareValidateItem, async (req, res) => {
         });
     }
 
+    if (bidItem.endAt < new Date()) {
+        return res.status(400).send(<ErrorResponse>{
+            message: "Item already expired!"
+        });
+    }
+
     //check if last bid at compare with current time must be 5 secs 
     if (bidItem.lastBidAt) {
         let nextBidAvailableSecs = bidItem.lastBidAt.getTime() + (5 * 1000);

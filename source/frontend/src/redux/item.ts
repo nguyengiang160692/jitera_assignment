@@ -14,6 +14,8 @@ export interface IItem {
     currentPrice?: number;
     status: ItemStatus;
     durationInMinutes?: number;
+    publishAt?: Date;
+    endAt?: Date;
 }
 
 export interface Pagination {
