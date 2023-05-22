@@ -1,14 +1,24 @@
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
-import { Modal, Box, Typography, Button, TextField, Stack } from "@mui/material";
+import { Modal, Box, Typography, Button, TextField, Stack, IconButton } from "@mui/material";
 import { useAppDispatch } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { bidItem } from "../../redux/item";
+import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
+import IndeterminateCheckBoxRoundedIcon from '@mui/icons-material/IndeterminateCheckBoxRounded';
+import React from "react";
 
 export default NiceModal.create(({ }) => {
     const modal = useModal();
     const dispatch = useAppDispatch()
     const selectedItem = useSelector((state: RootState) => state.item.selectedItem)
+
+    const [bidPrice, setBidPrice] = React.useState<number>(0)
+    const [threshold, setThreshold] = React.useState<number>(100)
+
+    const handleThresHoldChange = (amount: number) => () => {
+        setBidPrice(bidPrice + amount)
+    }
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -32,7 +42,6 @@ export default NiceModal.create(({ }) => {
 
         if (selectedItem?.currentPrice && bidPrice > selectedItem?.currentPrice) {
             dispatch(bidItem(bidPrice, selectedItem))
-            modal.hide()
         }
     }
 
@@ -66,7 +75,26 @@ export default NiceModal.create(({ }) => {
                         name="bidPrice"
                         autoComplete="bidPrice"
                         autoFocus
+                        value={bidPrice}
+                        onInput={(event: React.ChangeEvent<HTMLInputElement>) => { setBidPrice(parseFloat(event.target.value)) }}
                     />
+                    <Stack direction="row" sx={{ mt: 2, mb: 2 }} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                        <IconButton onClick={handleThresHoldChange(-1 * threshold)}>
+                            <IndeterminateCheckBoxRoundedIcon />
+                        </IconButton>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            label="Threshold amount"
+                            autoFocus
+                            defaultValue={threshold}
+                            onInput={(event: React.ChangeEvent<HTMLInputElement>) => { setThreshold(parseFloat(event.target.value)) }}
+                        />
+                        <IconButton onClick={handleThresHoldChange(threshold)}>
+                            <AddBoxRoundedIcon />
+                        </IconButton>
+                    </Stack>
                     <Stack sx={{ mt: 1 }} direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
                         <Button
                             type="submit"
