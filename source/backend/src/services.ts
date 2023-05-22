@@ -89,7 +89,6 @@ export const addItemToExchange = async (item: IItem, user: IUser): Promise<Boole
         return false;
     }
 }
-
 // pagination   
 export const getItemsOnExchangePagination = async (): Promise<IItem[]> => {
     try {
@@ -104,17 +103,24 @@ export const getItemsOnExchangePagination = async (): Promise<IItem[]> => {
     }
 }
 
-export const bidItemOnExchange = async (item: IItem, bidder: IUser, amount: number): Promise<Boolean> => {
+export const bidItemOnExchange = async (item: IItem, bidder: IUser, bidPrice: number): Promise<Boolean> => {
     try {
         item.lastBidder = bidder._id;
-        item.lastBidAmount = amount;
+        item.currentPrice = bidPrice;
+
+        item.biddingHistory.push({
+            bidder: bidder._id,
+            bidPrice: bidPrice,
+            bidAt: new Date()
+        });
+
+        //create hitory
         await item.save();
 
         return true;
-    }
-    catch (err: any) {
+    } catch (err: any) {
         console.log(err.message);
 
         return false;
     }
-}  
+}

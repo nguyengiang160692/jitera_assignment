@@ -3,6 +3,7 @@ import { Modal, Box, Typography, Button, TextField, Stack } from "@mui/material"
 import { useAppDispatch } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { bidItem } from "../../redux/item";
 
 export default NiceModal.create(({ }) => {
     const modal = useModal();
@@ -27,7 +28,12 @@ export default NiceModal.create(({ }) => {
         const data = new FormData(event.currentTarget);
         const parsed = Object.fromEntries(data)
 
-        const bidAmount: number = parseFloat(data.get('amount') as string)
+        const bidPrice: number = parseFloat(data.get('bidPrice') as string)
+
+        if (selectedItem?.currentPrice && bidPrice > selectedItem?.currentPrice) {
+            dispatch(bidItem(bidPrice, selectedItem))
+            modal.hide()
+        }
     }
 
     return <>
@@ -55,10 +61,10 @@ export default NiceModal.create(({ }) => {
                         margin="normal"
                         required
                         fullWidth
-                        id="amount"
-                        label="amount"
-                        name="amount"
-                        autoComplete="amount"
+                        id="bidPrice"
+                        label="My bid price"
+                        name="bidPrice"
+                        autoComplete="bidPrice"
                         autoFocus
                     />
                     <Stack sx={{ mt: 1 }} direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>

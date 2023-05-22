@@ -7,6 +7,7 @@ import { Pagination } from '@mui/material';
 
 
 export interface IItem {
+    _id?: string;
     name: string;
     description?: string;
     startPrice: number;
@@ -88,6 +89,29 @@ export const createItem = (item: IItem, cb?: Function): AppThunk => async (dispa
         }))
 
         cb && cb();
+    } catch (error: any) {
+        console.log(error);
+
+        store.dispatch(openSnackbar({
+            message: error.response?.data?.message,
+            severity: 'error'
+        }))
+    }
+}
+
+export const bidItem = (bidPrice: number, selectedItem: IItem): AppThunk => async (dispatch, getState) => {
+    try {
+        await apiService.put(`/item/${selectedItem._id}/bid`, {
+            bidPrice: bidPrice
+        });
+
+        dispatch(fetchItems());
+
+        //dispatch snack bar action
+        store.dispatch(openSnackbar({
+            message: 'Bid item successfully',
+            severity: 'success'
+        }))
     } catch (error: any) {
         console.log(error);
 

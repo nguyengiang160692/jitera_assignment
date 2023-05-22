@@ -10,7 +10,7 @@ export enum ItemStatus {
 
 export interface IItemHistory {
     bidder: string;
-    amount: number;
+    bidPrice: number;
     bidAt: Date;
 }
 
@@ -22,9 +22,8 @@ export interface IItem extends Document {
     status: ItemStatus;
     owner: string;
     lastBidder: string;
-    lastBidAmount: number;
     publishAt: Date;
-    biddingHistory?: IItemHistory[];
+    biddingHistory: IItemHistory[];
 }
 
 const ItemSchema = new Schema<IItem>({
@@ -35,13 +34,15 @@ const ItemSchema = new Schema<IItem>({
     status: { type: Number, enum: [0, 1, 2], default: 0 },
     owner: { type: String, required: true, ref: 'User' },
     lastBidder: { type: String, required: false, ref: 'User' },
-    lastBidAmount: { type: Number, required: false, min: 10 },
     publishAt: { type: Date, required: false },
-    biddingHistory: [{
-        bidder: { type: String, required: true, ref: 'User' },
-        amount: { type: Number, required: true, min: 10 },
-        bidAt: { type: Date, required: true },
-    }]
+    biddingHistory: {
+        type: [{
+            bidder: { type: String, required: true, ref: 'User' },
+            bidPrice: { type: Number, required: true, min: 10 },
+            bidAt: { type: Date, required: true },
+        }],
+        default: []
+    }
 }, { timestamps: true });
 
 ItemSchema.plugin(paginate);
