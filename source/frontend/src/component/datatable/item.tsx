@@ -1,29 +1,47 @@
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
+
 import { useModal } from '@ebay/nice-modal-react';
-import bidModal from '../modal/bidModal';
-import { useEffect } from 'react';
-import { RootState, useAppDispatch } from '../../redux/store';
-import { fetchItems, selectedItem } from '../../redux/item';
-import { useSelector } from 'react-redux';
+import { PlayArrow } from '@mui/icons-material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime'
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+import { RootState, useAppDispatch, useAppSelector } from '../../redux/store';
+
+import { fetchItems, publishItem, selectedItem } from '../../redux/item';
+
+import bidModal from '../modal/bidModal';
+import { useEffect, useState } from 'react';
+
 
 const ItemDataTable = () => {
     const dispatch = useAppDispatch()
-    const paginate = useSelector((state: RootState) => state.item.paginate)
-
-    dayjs.extend(relativeTime)
+    const paginate = useAppSelector((state: RootState) => state.item.paginate)
+    const [openDialog, setOpenDialog] = useState(false)
 
     useEffect(() => {
         dispatch(fetchItems())
     }, []);
+
+    dayjs.extend(relativeTime)
 
     const bidModalTrigger = useModal(bidModal);
 
     const bidHandleClick = (row: any) => {
         bidModalTrigger.show()
         dispatch(selectedItem(row))
+    }
+
+    const openConfirmPublish = (row: any) => {
+        dispatch(selectedItem(row))
+        // popup a confirmation dialog
+        setOpenDialog(true)
+    }
+
+    const handlePublish = () => {
+        setOpenDialog(false)
+        // dispatch publish item base on selected item
+        dispatch(publishItem())
     }
 
     const columns: GridColDef[] = [
@@ -64,10 +82,12 @@ const ItemDataTable = () => {
             }
         },
         {
-            field: 'publishAt',
-            headerName: 'Publish At',
+            field: 'endAt',
+            headerName: 'End in',
             flex: 2,
-            renderCell: (params: GridRenderCellParams) => (params.row.publishAt ? dayjs(params.row.publishAt).fromNow() : '')
+            renderCell: (params: GridRenderCellParams) => {
+                return <span>{dayjs(params.row.endAt).fromNow()}</span>
+            }
         },
         {
             field: 'action',
@@ -75,21 +95,48 @@ const ItemDataTable = () => {
             align: 'right',
             flex: 1,
             renderCell: (params: GridRenderCellParams) => (
-                <Button
-                    variant="contained"
-                    size="small"
-                    disabled={params.row.status !== 1}
-                    style={{ marginLeft: 16 }}
-                    tabIndex={params.hasFocus ? 0 : -1}
-                    onClick={() => bidHandleClick(params.row)}
-                >
-                    Bid
-                </Button>
+                <>
+                    {params.row.status == 0 && <Button
+                        variant="contained"
+                        color='success'
+                        startIcon={<PlayArrow />}
+                        size="small"
+                        tabIndex={params.hasFocus ? 0 : -1}
+                        onClick={() => openConfirmPublish(params.row)}
+                    >
+                        Publish
+                    </Button>}
+                    {params.row.status == 1 && <Button
+                        variant="contained"
+                        size="small"
+                        style={{ marginLeft: 16 }}
+                        tabIndex={params.hasFocus ? 0 : -1}
+                        onClick={() => bidHandleClick(params.row)}
+                    >
+                        Bid
+                    </Button>}
+                </>
             )
         },
     ];
 
     return <>
+        <Dialog open={openDialog} onClose={() => { setOpenDialog(false) }}>
+            <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+                Confirmation
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Are you sure want to publish this item on sell?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button autoFocus onClick={() => { setOpenDialog(false) }}>
+                    Cancel
+                </Button>
+                <Button color='primary' onClick={handlePublish}>Publish</Button>
+            </DialogActions>
+        </Dialog>
         <DataGrid
             rows={paginate.docs || []}
             getRowId={(row) => row._id}

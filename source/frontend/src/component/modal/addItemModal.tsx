@@ -47,7 +47,7 @@ export default NiceModal.create(({ }) => {
             description: data.get('description') as string,
             startPrice: parseFloat(data.get('start_price') as string),
             status: status,
-            publishAt: dateTimePick?.toISOString() as string
+            durationInMinutes: parseInt(data.get('duration_in_minutes') as string),
         }, modal.hide))
     }
 
@@ -99,7 +99,19 @@ export default NiceModal.create(({ }) => {
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 10 }}
                                 autoFocus
                             />
-                            <DateTimePicker sx={{ 'width': '100%', mt: 3 }} label="Choose publish time" defaultValue={today} value={dateTimePick} onChange={(newValue) => setDateTimePick(newValue)} />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="duration_in_minutes"
+                                label="Duration in minutes"
+                                name="duration_in_minutes"
+                                autoComplete="duration_in_minutes"
+                                type="text"
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                autoFocus
+                                defaultValue={5}
+                            />
                             <Stack sx={{ mt: 3 }} direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
                                 <Button
                                     type="submit"

@@ -12,9 +12,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { logout } from '../../redux/auth';
-import { RootState, useAppDispatch } from '../../redux/store';
+import { RootState, useAppDispatch, useAppSelector } from '../../redux/store';
 import Logo from './logo';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import depositModal from '../modal/depositModal';
@@ -23,7 +22,7 @@ import addItemModal from '../modal/addItemModal';
 export default function MainMenu() {
     const dispatch = useAppDispatch()
 
-    const auth = useSelector((state: RootState) => state.auth)
+    const auth = useAppSelector((state: RootState) => state.auth)
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);

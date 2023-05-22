@@ -23,6 +23,8 @@ export interface IItem extends Document {
     owner: string;
     lastBidder: string;
     publishAt: Date;
+    endAt: Date;
+    durationInMinutes: number;
     lastBidAt: Date;
     biddingHistory: IItemHistory[];
 }
@@ -36,6 +38,8 @@ const ItemSchema = new Schema<IItem>({
     owner: { type: String, required: true, ref: 'User' },
     lastBidder: { type: String, required: false, ref: 'User' },
     publishAt: { type: Date, required: false },
+    endAt: { type: Date, required: false },
+    durationInMinutes: { type: Number, required: false, default: 5 },
     lastBidAt: { type: Date, required: false },
     biddingHistory: {
         type: [{
@@ -56,7 +60,7 @@ export const qualityItem = Joi.object({
     description: Joi.string().optional(),
     startPrice: Joi.number().required().min(10),
     status: Joi.string().optional().valid(...Object.values(ItemStatus)),
-    publishAt: Joi.date().optional(),
+    durationInMinutes: Joi.number().optional().min(1),
 });
 
 

@@ -2,6 +2,7 @@ import express from "express";
 import passport from "passport";
 import { addBalance } from '../services'
 import { IUser } from "../model/user";
+import { ErrorResponse } from "../http/respose";
 
 import Joi from 'joi';
 

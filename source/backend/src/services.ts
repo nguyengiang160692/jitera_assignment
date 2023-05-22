@@ -68,15 +68,7 @@ export const addItemToExchange = async (item: IItem, user: IUser): Promise<Boole
     try {
         const newItem = new Item(item);
 
-        //compare current publish time with current time
-        //if greater than now, then set as draft wait to publish
-
-        if (newItem.publishAt > new Date()) {
-            newItem.status = ItemStatus.DRAFT;
-        } else {
-            newItem.status = ItemStatus.PUBLISHED;
-        }
-
+        newItem.status = ItemStatus.DRAFT;
         newItem.currentPrice = item.startPrice;
         newItem.owner = user._id;
 

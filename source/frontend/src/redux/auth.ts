@@ -3,9 +3,6 @@ import { AppThunk, store } from "./store";
 import apiService, { setAuthToken } from "../lib/apiService";
 import { openSnackbar } from "./snackbar";
 
-// use it to define state type instead ! I know in real world, we can not use this because maybe FE project is on different repo
-import { IUser } from '../../../backend/src/model/user'
-
 const localToken = window.localStorage.getItem('token');
 const user = window.localStorage.getItem('user');
 
@@ -68,7 +65,6 @@ export const authSlice = createSlice({
 
 export const { userLoading, loginSuccess, logoutSuccess, registerSuccess, loadProfileSuccess } = authSlice.actions;
 
-export default authSlice.reducer;
 
 // HOW TO APP CALL Backend & interact with another store reducers
 
@@ -189,3 +185,5 @@ export const deposit = (amount: number, cb: Function): AppThunk => async (dispat
 
     cb && cb();
 };
+
+export default authSlice.reducer;

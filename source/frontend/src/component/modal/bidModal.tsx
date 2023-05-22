@@ -44,7 +44,6 @@ export default NiceModal.create(({ }) => {
             dispatch(bidItem(bidPrice, selectedItem))
         }
     }
-
     return <>
         <Modal
             open={modal.visible}

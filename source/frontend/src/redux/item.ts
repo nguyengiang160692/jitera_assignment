@@ -13,7 +13,7 @@ export interface IItem {
     startPrice: number;
     currentPrice?: number;
     status: ItemStatus;
-    publishAt: string;
+    durationInMinutes?: number;
 }
 
 export interface Pagination {
@@ -40,7 +40,6 @@ const initialState = {
     error: null
 }
 
-
 export const itemSlice = createSlice({
     name: 'item',
     initialState,
@@ -50,8 +49,6 @@ export const itemSlice = createSlice({
         },
         loadedItems: (state, action) => {
             state.loading = false;
-            console.log(action.payload);
-
             state.paginate = action.payload;
         },
         selectedItem: (state, action) => {
@@ -59,6 +56,8 @@ export const itemSlice = createSlice({
         }
     },
 });
+
+export default itemSlice.reducer;
 
 export const { loadedItems, loadingItems, selectedItem } = itemSlice.actions;
 
@@ -99,6 +98,32 @@ export const createItem = (item: IItem, cb?: Function): AppThunk => async (dispa
     }
 }
 
+export const publishItem = (cb?: Function): AppThunk => async (dispatch, getState) => {
+
+    const item = getState().item.selectedItem;
+
+    try {
+        await apiService.put(`/item/${item._id}/publish`);
+
+        dispatch(fetchItems());
+
+        //dispatch snack bar action
+        store.dispatch(openSnackbar({
+            message: 'Publish item successfully',
+            severity: 'success'
+        }))
+
+        cb && cb();
+    } catch (error: any) {
+        console.log(error);
+
+        store.dispatch(openSnackbar({
+            message: error.response?.data?.message,
+            severity: 'error'
+        }))
+    }
+}
+
 export const bidItem = (bidPrice: number, selectedItem: IItem): AppThunk => async (dispatch, getState) => {
     try {
         await apiService.put(`/item/${selectedItem._id}/bid`, {
@@ -121,6 +146,3 @@ export const bidItem = (bidPrice: number, selectedItem: IItem): AppThunk => asyn
         }))
     }
 }
-
-
-export default itemSlice.reducer;
