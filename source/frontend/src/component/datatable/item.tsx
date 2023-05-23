@@ -75,7 +75,7 @@ const ItemDataTable = () => {
             flex: 2,
             renderCell: (params: GridRenderCellParams) => {
                 return <span>${params.row.currentPrice?.toLocaleString()}</span>
-            }
+            },
         },
         {
             field: 'status',

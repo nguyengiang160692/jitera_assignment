@@ -85,7 +85,18 @@ export const addItemToExchange = async (item: IItem, user: IUser): Promise<Boole
 export const getItemsOnExchangePagination = async (): Promise<IItem[]> => {
     try {
         // temporary forget about pagination :D 
-        let items: any = await Item.paginate({}, { page: 1, limit: 9999999, populate: { path: 'owner', select: 'username' } });
+        let items: any = await Item.paginate({}, {
+            page: 1, limit: 9999999, populate: [
+                {
+                    path: 'owner',
+                    select: 'username'
+                },
+                {
+                    path: 'lastBidder',
+                    select: 'username'
+                }
+            ]
+        });
 
         return items;
     } catch (err: any) {

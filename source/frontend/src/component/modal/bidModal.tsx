@@ -6,15 +6,16 @@ import { RootState } from "../../redux/store";
 import { bidItem } from "../../redux/item";
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import IndeterminateCheckBoxRoundedIcon from '@mui/icons-material/IndeterminateCheckBoxRounded';
-import React from "react";
+import React, { useEffect } from "react";
 
 export default NiceModal.create(({ }) => {
     const modal = useModal();
     const dispatch = useAppDispatch()
     const selectedItem = useSelector((state: RootState) => state.item.selectedItem)
 
-    const [bidPrice, setBidPrice] = React.useState<number>(selectedItem?.currentPrice || selectedItem?.startPrice || 0)
-    const [threshold, setThreshold] = React.useState<number>(100)
+    const [bidPrice, setBidPrice] = React.useState<number>((selectedItem?.currentPrice || 0) + 10 || selectedItem?.startPrice || 0)
+
+    const [threshold, setThreshold] = React.useState<number>(10)
 
     const handleThresHoldChange = (amount: number) => () => {
         setBidPrice(bidPrice + amount)
@@ -64,6 +65,9 @@ export default NiceModal.create(({ }) => {
                     </Typography>
                     <Typography>
                         Current price: <b>${selectedItem?.currentPrice?.toLocaleString()}</b>
+                    </Typography>
+                    <Typography>
+                        Last bidder: <b>{selectedItem?.lastBidder?.username}</b>
                     </Typography>
                     <TextField
                         margin="normal"

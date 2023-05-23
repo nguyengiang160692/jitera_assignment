@@ -16,6 +16,9 @@ export interface IItem {
     durationInMinutes?: number;
     publishAt?: Date;
     endAt?: Date;
+    lastBidder?: {
+        username: string
+    }
 }
 
 export interface Pagination {
